@@ -1,0 +1,89 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+
+body{
+    height: 88vh;
+    width: 100%;
+    background-color: rgb(101 94 156);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.box{
+    height: 33vh;
+    width: 278px;
+    /*background-color: #d9d9d9;*/
+    border-radius: 180px;
+    box-shadow: 0px 0px 2px 5px #ff8c9d;
+    overflow: hidden;
+   
+}
+
+.disp{
+    margin-bottom: 3rem;
+    color: #b2b2b2;
+}
+
+
+.box form{
+    height: 17vh;
+    width: 100%;
+    /*background-color: #d9d9d9;*/
+    line-height: 34vh;
+    text-align: center;
+    color: #ffffff;
+   
+}
+
+.box form input{
+    width: 71px;
+    border: none;
+    outline: none;
+    /*border-bottom: 1px solid #3b3b3b; */
+    color: #ffffff;
+    background-color: transparent;
+    font-size: 30px;
+    text-align: center;
+
+}
+
+.box form input::placeholder{
+    font-size: 30px;
+    color: #ffffff;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    
+}
+
+.box .btn{
+    height: 13vh;
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.box .btn button{
+    padding: 5px 10px;
+    font-size: 18px;
+    background-color: #292828;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.box .btn button:hover{
+    background-color: #8e44ad;
+}
+
