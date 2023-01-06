@@ -111,3 +111,21 @@ app.post('/api/edit/todolist', (req,res) => {
         }
     });
 })
+app.post('/api/signup',(req,res) =>{
+    let username = req.body.username
+    let password = req.body.password
+try {
+    if (username && password && (password.length >= 8)){
+        con.query('select * from member')
+    }else{
+        res.status(200).json({
+            msg : 'username or password wrong !',
+        })
+    }
+} catch (error) {
+    console.log(error)
+    res.status(400).json({
+        msg : 'something wrong'
+    })
+}
+})
