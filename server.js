@@ -166,6 +166,7 @@ app.post('/api/login',(req,res) => {
     console.log('login API')
     let username = req.body.username
     let password = req.body.password
+    console.log(1)
     const responseErr = (msg1) => {
         res.status(400).json({
             msg: msg1 ? msg1 : 'something wrong',
@@ -179,17 +180,25 @@ app.post('/api/login',(req,res) => {
         })
     }
     try{
+        console.log(2)
         username = MD5(username)
         password = MD5(password)
         if (username && password && (password.length >= 8)) {
+            console.log(3)
             con.query('select * from member where username =  ? ', [username,password], function (error, results, fields) {
                 if (error) {
+                    console.log(6)
                     responseErr()
                 } else if (results[0]) {
+                    console.log(results)
                     responseSuccess('login')
+                }else{
+                    console.log(results)
+                    responseErr()
                 }
             })
         }else{
+            console.log(4)
             responseErr('username and password something wrong')
         }
     }catch(err){

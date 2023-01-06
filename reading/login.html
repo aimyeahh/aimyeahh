@@ -14,7 +14,7 @@
     <form action="#">
       <div class="field email">
         <div class="input-area">
-          <input type="text" placeholder="Email Address">
+          <input id="usernameid" type="text" placeholder="Username">
           <i class="icon fas fa-envelope"></i>
           <i class="error error-icon fas fa-exclamation-circle"></i>
         </div>
@@ -22,19 +22,19 @@
       </div>
       <div class="field password">
         <div class="input-area">
-          <input type="password" placeholder="Password">
+          <input id="passwordid"  type="password" autocomplete="current-password" placeholder="Password">
           <i class="icon fas fa-lock"></i>
           <i class="error error-icon fas fa-exclamation-circle"></i>
         </div>
         <div class="error error-txt">Password can't be blank</div>
       </div>
       <div class="pass-txt"><a href="#">Forgot password?</a></div>
-      <input type="submit" value="Login">
+      <input onclick="loginbyaim()" type="button" value="Login">
     </form>
-    <div class="sign-txt">Not yet member? <a href="#">Signup now</a></div>
+    <div class="sign-txt">Not yet member? <a href="./signup.html">Signup now</a></div>
   </div>
 
-  <script src="login.js"></script>
+  <script src="./js/login.js"></script>
 
 </body>
 </html>
