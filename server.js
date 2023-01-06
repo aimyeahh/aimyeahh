@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 let cors = require('cors')
-
+const MD5 = require('md5');
 const mysql = require('mysql');
 let con = mysql.createConnection({
     host: "localhost",
@@ -43,7 +43,7 @@ app.get('/api/todolist', (req, res) => {
 
 })
 
-app.post('/api/insert/todolist', (req,res) => {
+app.post('/api/insert/todolist', (req, res) => {
     let user = req.body.user
     let text = req.body.text
     // console.log('user',text)
@@ -65,10 +65,10 @@ app.post('/api/insert/todolist', (req,res) => {
     });
 })
 
-app.post('/api/remove/todolist', (req,res) => {
+app.post('/api/remove/todolist', (req, res) => {
     // let user = req.body.user
     let planid = req.body.planid
-    console.log('planid',planid)
+    console.log('planid', planid)
     con.query(`
     UPDATE todolist
     SET user = 'remove'
@@ -87,12 +87,12 @@ app.post('/api/remove/todolist', (req,res) => {
         }
     });
 })
-app.post('/api/edit/todolist', (req,res) => {
+app.post('/api/edit/todolist', (req, res) => {
     // let user = req.body.user
     let planid = req.body.planid
     let text = req.body.text
-    console.log('edit',planid)
-    console.log('text',text)
+    console.log('edit', planid)
+    console.log('text', text)
     con.query(`
     UPDATE todolist
     SET text = '${text}'
@@ -111,21 +111,88 @@ app.post('/api/edit/todolist', (req,res) => {
         }
     });
 })
-app.post('/api/signup',(req,res) =>{
-    let username = req.body.username
-    let password = req.body.password
-try {
-    if (username && password && (password.length >= 8)){
-        con.query('select * from member')
-    }else{
-        res.status(200).json({
-            msg : 'username or password wrong !',
+
+app.post('/api/signup', (req, res) => {
+    const responseErr = (msg1) => {
+        res.status(400).json({
+            msg: msg1 ? msg1 : 'something wrong',
+            code: -1
         })
     }
-} catch (error) {
-    console.log(error)
-    res.status(400).json({
-        msg : 'something wrong'
-    })
-}
+    const responseSuccess = (msg1) => {
+        res.status(200).json({
+            msg: msg1 ? msg1 : 'success',
+            code: 0
+        })
+    }
+    let username = req.body.username
+    let password = req.body.password
+    try {
+        if (username && password && (password.length >= 8)) {
+            username = MD5(username)
+            password = MD5(password)
+            con.query('select * from member where username =  ? ', [username], function (error, results, fields) {
+                if (error) {
+                    responseErr()
+                } else if (!results[0]) {
+                    console.log(results)
+                    con.query(`INSERT INTO member(username,password) VALUES ( ?, ? );`,[username,password], function (err, result) {
+                        if (err) {
+                            console.log(err)
+                            res.status(200).json({
+                                msg: 'Bad'
+                            })
+                        } else {
+                            console.log(result)
+                            responseSuccess()
+                        }
+                    });
+                   
+                } else {
+                    responseErr('username already exists')
+                }
+            })
+        } else {
+            res.status(200).json({
+                msg: '',
+            })
+        }
+    } catch (error) {
+        console.log(error)
+        responseErr()
+    }
+})
+app.post('/api/login',(req,res) => {
+    console.log('login API')
+    let username = req.body.username
+    let password = req.body.password
+    const responseErr = (msg1) => {
+        res.status(400).json({
+            msg: msg1 ? msg1 : 'something wrong',
+            code: -1
+        })
+    }
+    const responseSuccess = (msg1) => {
+        res.status(200).json({
+            msg: msg1 ? msg1 : 'success',
+            code: 0
+        })
+    }
+    try{
+        username = MD5(username)
+        password = MD5(password)
+        if (username && password && (password.length >= 8)) {
+            con.query('select * from member where username =  ? ', [username,password], function (error, results, fields) {
+                if (error) {
+                    responseErr()
+                } else if (results[0]) {
+                    responseSuccess('login')
+                }
+            })
+        }else{
+            responseErr('username and password something wrong')
+        }
+    }catch(err){
+        responseErr()
+    }
 })
