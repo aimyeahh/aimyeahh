@@ -29,7 +29,13 @@ Timer = ()=>{
        second.value = sc;
     }
     else{
-        disp.innerText = "Time Over";
+        disp.innerText = "Time Over!!!";
+
+            var audio = new Audio(
+'http://soundbible.com/grab.php?id=1252&type=mp3');
+            audio.play();
+
+
     }
 }
 
