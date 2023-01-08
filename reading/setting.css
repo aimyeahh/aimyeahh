@@ -19,17 +19,19 @@ body {
 	flex-direction: column;
 	min-height: 100vh;
 	background-size: 100% 100%;	
-    background-color: #defff3;
+    background-color: #ffffff;
 }
 
 header {
-	padding: 2.7rem 1.3rem;
+	display: flex;
+	padding: 2.7rem 2.3rem;
 	max-width: 800px;
 	width: 100%;
 	margin: 0 auto;
     border-radius: 0px 0px 20px 20px;
 	box-shadow: 0px 10px 5px #9f9f9f;
-	background-color: #14b35c;
+	background-color: #2d9cda;
+	align-items: center;
 }
 
 header h1{ 
