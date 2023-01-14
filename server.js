@@ -34,7 +34,7 @@ app.get('/', (req, res) => {
 app.post('/api/todolist', (req, res) => {
     let token = req.body.token
     console.log(token)
-    let user = decodeToken(token).data[0].username
+    let user = decodeToken(token).username
     con.query(`select * from todolist where username = ?`,[user],function (err, result) {
         if (err) throw err;
         console.log("Result: " + JSON.stringify(result));
@@ -50,6 +50,7 @@ app.post('/api/todolist', (req, res) => {
 function decodeToken(token){
     try{
     let decoded = jwt.verify(token, secretKey);
+    console.log(decoded)
     return decoded
     }catch(err){
         console.log('token :', err)
@@ -61,7 +62,7 @@ app.post('/api/insert/todolist', (req, res) => {
     try{
         // let decoded = jwt.verify(token, secretKey);
         // console.log(typeof decoded , decoded.data[0].username)
-        let user = decodeToken(token).data[0].username
+        let user = decodeToken(token).username
         con.query(`
         INSERT INTO todolist(username,text) 
         VALUES ('${user}', '${text}');`, function (err, result) {
@@ -176,7 +177,7 @@ app.post('/api/signup', (req, res) => {
             })
         } else {
             res.status(200).json({
-                msg: '',
+                msg: 'check your username and password',
             })
         }
     } catch (error) {
@@ -221,7 +222,7 @@ app.post('/api/login', (req, res) => {
                     WHERE todolist.username = ?`, [username], (error, data) => {
                         if (error) responseErr()
                         else {
-                            const token = jwt.sign({ data }, secretKey);
+                            const token = jwt.sign({ data , username }, secretKey);
                             console.log('token', token)
                             responseSuccess('login', token)
                         }
