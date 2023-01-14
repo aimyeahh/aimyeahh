@@ -70,7 +70,9 @@ async function loginbyaim() {
     let data = await response.json();
     console.log(data);
     if(data.msg == 'login'){
-      window.location.href = './home.html'
+      let token = data.token
+      localStorage.setItem('token',token);
+       window.location.href = './home.html'
     }else{
       alert('something wrong')
     }

@@ -64,11 +64,14 @@ render()
 var todolistdata = ''
 function render() {
 	fetch("http://localhost:3000/api/todolist", {
-		method: "GET",
+		method: "POST",
 		headers: {
 			'Content-Type': 'application/json'
 			// 'Content-Type': 'application/x-www-form-urlencoded',
 		},
+		body : JSON.stringify({
+			token : localStorage.getItem('token')
+		})
 	}).then((res => res.json())).then(async data => {
 		let datalen = data.data.length
 		console.log(data.data)
@@ -167,7 +170,7 @@ async function inserttodolist() {
 				// 'Content-Type': 'application/x-www-form-urlencoded',
 			},
 			body: JSON.stringify({
-				user: 'bydom',
+				token : localStorage.getItem('token'),
 				text: valueinsert + ""
 			})
 		})
