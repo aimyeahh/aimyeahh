@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 let cors = require('cors')
 const MD5 = require('md5');
 const mysql = require('mysql');
+let jwt = require('jsonwebtoken');
 let con = mysql.createConnection({
     host: "localhost",
     user: "root",
