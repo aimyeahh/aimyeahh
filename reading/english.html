@@ -157,7 +157,7 @@
 		}
 
 		let bodyContent = JSON.stringify({
-			"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjpbeyJpZCI6OSwidXNlcm5hbWUiOiJkZDk4OGNmZDc2OWM5ZjdmYmQ3OTVhMGY1ZGE4ZTc1MSIsInRleHQiOiJoZWxsbyB3b3JsZCIsInN1YmplY3QiOiJlbmciLCJyZWYxIjoidDEiLCJyZWYyIjoidDIiLCJyZWYzIjoidDMifSx7ImlkIjo5LCJ1c2VybmFtZSI6ImRkOTg4Y2ZkNzY5YzlmN2ZiZDc5NWEwZjVkYThlNzUxIiwidGV4dCI6IuC4l-C4s-C4geC4suC4o-C4muC5ieC4suC4mSIsInN1YmplY3QiOiJlbmciLCJyZWYxIjoidDEiLCJyZWYyIjoidDIiLCJyZWYzIjoidDMifSx7ImlkIjo5LCJ1c2VybmFtZSI6ImRkOTg4Y2ZkNzY5YzlmN2ZiZDc5NWEwZjVkYThlNzUxIiwidGV4dCI6IuC4hOC4k-C4tCIsInN1YmplY3QiOiJlbmciLCJyZWYxIjoidDEiLCJyZWYyIjoidDIiLCJyZWYzIjoidDMifV0sInVzZXJuYW1lIjoiZGQ5ODhjZmQ3NjljOWY3ZmJkNzk1YTBmNWRhOGU3NTEiLCJpYXQiOjE2NzM3MDI2NzN9.eGFtWB0G3mGk5yRGiDXqr07DygqQ1xa97rFgBWh1ep8"
+			"token": localStorage.getItem('token')
 		});
 
 		let response = await fetch("http://localhost:3000/api/subject/eng", {
@@ -173,7 +173,7 @@
 			data = data.data
 			console.log('new :', data)
 			let html = ``
-			data.map(data => {
+			data.slice(0).reverse().map(data => {
 				const cal_percent = () => {
 					let full = parseFloat(data.ref2)
 					let correct = parseFloat(data.ref3)

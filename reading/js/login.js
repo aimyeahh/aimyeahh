@@ -71,8 +71,9 @@ async function loginbyaim() {
     console.log(data);
     if(data.msg == 'login'){
       let token = data.token
+      localStorage.setItem('token','')
       localStorage.setItem('token',token);
-       window.location.href = './home.html'
+      window.location.href = './home.html'
     }else{
       alert('something wrong')
     }

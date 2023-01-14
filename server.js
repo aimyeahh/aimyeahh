@@ -221,10 +221,12 @@ app.post('/api/login', (req, res) => {
                     ON data.mid = member.id
                     WHERE todolist.username = ?`, [username], (error, data) => {
                         if (error) responseErr()
-                        else {
-                            const token = jwt.sign({ data , username }, secretKey);
-                            const  decoded = jwt.verify(token, secretKey);
-                            console.log('decoded', decoded)
+                        else { 
+                            let mid = results[0].id
+                            // console.log(mid)
+                            const token = jwt.sign({ data , username , mid }, secretKey);
+                            // const  decoded = jwt.verify(token, secretKey);
+                            console.log('token', token)
                             responseSuccess('login', token)
                         }
                     })
@@ -264,8 +266,8 @@ app.post('/api/subject/insert',(req,res)=>{
         let data = req.body.data
         // console.log('subject : ',subject)
         // console.log('token in subject insert', subject)
-        let user = decodeToken(token).username
-        let mid = decodeToken(token).data[0].id
+        // let user = decodeToken(token).username
+        let mid = decodeToken(token).mid
        
         if(token && subject && data){
             con.query(`insert into data (mid,subject,ref1,ref2,ref3) values (?,?,?,?,?)`,
@@ -298,8 +300,10 @@ app.post('/api/subject/insert',(req,res)=>{
 app.post('/api/subject/:subject',(req,res)=>{
     try{
         let token  = req.body.token
-        let mid = decodeToken(token).data[0].id
+        console.log('token subject' ,token)
+        let mid = decodeToken(token).mid
         let subject = req.params.subject
+        // console.log(decodeToken(token))
         con.query(`select * from data where subject = ? && mid = ? `,[subject,mid],(err,result)=>{
             if(err) {
                 console.log(err)
