@@ -223,7 +223,8 @@ app.post('/api/login', (req, res) => {
                         if (error) responseErr()
                         else {
                             const token = jwt.sign({ data , username }, secretKey);
-                            console.log('token', token)
+                            const  decoded = jwt.verify(token, secretKey);
+                            console.log('decoded', decoded)
                             responseSuccess('login', token)
                         }
                     })
@@ -254,6 +255,66 @@ app.get('/api/profile', (req, res) => {
             console.log('/api/profile/Err : ', err)
             return res.status(401).json({ msg: 'Unauthorized', code : -2 });
         }
+    }
+})
+app.post('/api/subject/insert',(req,res)=>{
+    try{
+        let token = req.body.token
+        let subject = req.body.subject
+        let data = req.body.data
+        // console.log('subject : ',subject)
+        // console.log('token in subject insert', subject)
+        let user = decodeToken(token).username
+        let mid = decodeToken(token).data[0].id
+       
+        if(token && subject && data){
+            con.query(`insert into data (mid,subject,ref1,ref2,ref3) values (?,?,?,?,?)`,
+            [mid,subject,data.subject,data.num_all+'',data.num_correct+'']
+            ,function (error, results, fields){
+                if(error) {
+                    console.log(error)
+                    res.status(400).json({msg : 'query data base err'})
+                }
+                else{
+                    res.status(200).json({msg : 'success',code : 0})
+                }
+            })
+        }else{
+            res.status(400).json({
+                msg : 'something wrong',
+                code : -2
+            })
+        }
+    }catch(err){
+        console.log(err)
+        res.status(400).json({
+            msg : err,
+            err :err,
+            code : -1
+        })
+    }
+})
+
+app.post('/api/subject/:subject',(req,res)=>{
+    try{
+        let token  = req.body.token
+        let mid = decodeToken(token).data[0].id
+        let subject = req.params.subject
+        con.query(`select * from data where subject = ? && mid = ? `,[subject,mid],(err,result)=>{
+            if(err) {
+                console.log(err)
+                res.status(400).json({msg : 'query data base err'})
+            }
+            else{
+                res.status(200).json({msg : 'success',data : result,code : 0})
+            }
+        })
+    }catch(err){
+        console.log(err)
+        res.status(400).json({
+            msg: 'something err',
+            code : -1
+        })
     }
 })
 
