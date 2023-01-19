@@ -1,42 +1,206 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@500&family=Rubik:wght@500&display=swap" rel="stylesheet">
-	<title>English</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link
+		href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@500&family=Rubik:wght@500&display=swap"
+		rel="stylesheet">
+	<title>Math</title>
 
 	<link rel="stylesheet" href="subject.css" />
 
+	<style>
 
+	</style>
 </head>
 
 <body>
 
-	
-	<header style="background-color: #db9f54;">
+
+	<header style="background: #cb5e38">
 		<div style="display: flex; flex-direction: row;">
-			<h1>Math</h1><img style="width: 50px; height: 50px;" src="./img/1.jpg"></div>
-		
+			<h1>Math</h1><img style="width: 50px; height: 50px;" src="./img/1.jpg">
+		</div>
+
 	</header>
+	<div
+		style="position : relative ; bottom: 0; background-color: white;height: 60vh; display: inline-flex; flex-direction: column; align-items: center; ">
+		<div class="add" onclick="openModalGrade()">
+			<img class="addvector" src="./img/Vector.png">
+		</div>
+		<div id='subject_grade'>
+			<div>
+				<div class="slide-grade">
+					<div class="circle-grade">
+						<div id="text_grade" class="grade-text">A</div>
+					</div>
+					<div class="gread-bg-grade-text-center">
+						<div class="grade-text-title">12 Tense</div>
+						<div>Score 90/100</div>
+					</div>
+					<div id="grade_percent"
+						style="font-size: 20px; font-weight: 600; top: 30%;left: 90%; transform: translate(-50%,-50%); position: absolute;">
+						90%</div>
+				</div>
+			</div>
+			<div>
+				<div class="slide-grade">
+					<div class="circle-grade">
+						<div id="text_grade2" class="grade-text">A</div>
+					</div>
+					<div class="gread-bg-grade-text-center">
+						<div class="grade-text-title">12 Tense</div>
+						<div>Score 90/100</div>
+					</div>
+					<div id="grade_percent2"
+						style="font-size: 20px; font-weight: 600; top: 30%;left: 90%; transform: translate(-50%,-50%); position: absolute;">
+						90%</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-	<div class="add" style="background-color: #db9f54;"></div>
+	<div>
+		<div class="navbar">
+			<a href="timer.html" style="width: 20%;"><img style="width: 33px; " src="./img/stopwatchblack.png"></a>
+			<a href="#news" style="width: 20%;"><img style="width: 30px;" src="./img/agendablack.png"></a>
+			<a href="home.html" style="width: 20%;"><img style="width: 30px;" src="./img/homeblack.png"></a>
+			<a href="Todo.html" style="width: 20%;"><img style="width: 30px;" src="./img/pencilblack.png"></a>
+			<a href="setting.html" style="width: 20%;"><img style="width: 30px;" src="./img/settingblack.png"></a>
+		</div>
+	</div>
+	<div id="modal_grade1" class="modal-main">
+		<div class="modal-subject">
+			<div class="menu-top">
+				<div onclick="closeModalGrade()"><img class="img-close-svg" src="./img/Vector.svg" alt=""></div>
+				<div>คำนวณ</div>
+				<div onclick="saveGrade()">บันทึก</div>
+			</div>
+			<hr>
+			<div class="subject-save">
+				<div class="input1">
+					<div>หัวข้อ</div>
+					<input id="save1" type="text">
+				</div>
+				<div class="input1 i2">
+					<div>จำนวนข้อทั้งหมด</div>
+					<input id="save2" type=" text">
+				</div>
+				<div class="input1 i3">
+					<div>จำนวนข้อที่ถูกต้อง</div>
+					<input id="save3" type=" text">
+				</div>
+			</div>
 
-    <img class="addvector" src="./img/Vector.png">
+		</div>
 
-	
-<div>
-	<div class="navbar">
-		<a href="timer.html" style="width: 20%;"><img style="width: 33px; " src="./img/stopwatchblack.png"></a>
-		<a href="#news" style="width: 20%;"><img style="width: 30px;" src="./img/agendablack.png"></a>
-		<a href="home.html" style="width: 20%;" ><img style="width: 30px;" src="./img/homeblack.png"></a>
-		<a href="Todo.html" style="width: 20%;"><img style="width: 30px;" src="./img/pencilblack.png"></a>
-		<a href="setting.html" style="width: 20%;"><img style="width: 30px;" src="./img/settingblack.png"></a>
-	  </div>
-</div>
-	
+	</div>
+
 </body>
+
 </html>
+<script>
+	getCalData()
+	function openModalGrade() {
+		modal_grade1.classList.add('open')
+	}
+	function closeModalGrade() {
+		modal_grade1.classList.remove('open')
+		getCalData()
+	}
+	async function saveGrade() {
+		let input1 = save1.value
+		let input2 = save2.value
+		let input3 = save3.value
+		if (input1 && input2 && input3) {
+			try {
+				let jsondata = {
+					subject: input1,
+					num_all: parseFloat(input2),
+					num_correct: parseFloat(input3)
+				}
+				const response = await fetch('http://localhost:3000/api/subject/insert', {
+					method: 'POST',
+					headers: {
+						"Accept": "*/*",
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						token: localStorage.getItem('token'),
+						subject: 'math',
+						data: jsondata
+					})
+				})
+				const data = await response.json()
+				console.log(data)
+				if(data.msg === 'success'){
+					closeModalGrade()
+				}else{
+					alert('something err')
+				}
+			} catch (err) {
+				console.log(err)
+			}
+		} else {
+			alert('กรุณากรอกข้อมูลให้ครบ')
+		}
+	}
+	async function getCalData() {
+		let headersList = {
+			"Accept": "*/*",
+			"Content-Type": "application/json"
+		}
+
+		let bodyContent = JSON.stringify({
+			"token": localStorage.getItem('token')
+		});
+
+		let response = await fetch("http://localhost:3000/api/subject/math", {
+			method: "POST",
+			body: bodyContent,
+			headers: headersList
+		});
+
+		let data = await response.json();
+		console.log(data);
+		const PERCENT_GRADE = 100
+		if (data.msg === 'success') {
+			data = data.data
+			console.log('new :', data)
+			let html = ``
+			data.slice(0).reverse().map(data => {
+				const cal_percent = () => {
+					let full = parseFloat(data.ref2)
+					let correct = parseFloat(data.ref3)
+					return correct / full * PERCENT_GRADE
+				}
+				html += `
+				<div>
+				<div class="slide-grade">
+					<div class="circle-grade">
+						<div id="text_grade" class="grade-text">A</div>
+					</div>
+					<div class="gread-bg-grade-text-center">
+						<div class="grade-text-title">${data.ref1}</div>
+						<div>Score ${data.ref3}/${data.ref2}</div>
+					</div>
+					<div id="grade_percent"
+						style="font-size: 20px; font-weight: 600; top: 30%;left: 90%; transform: translate(-50%,-50%); position: absolute;">
+						${cal_percent().toFixed(0)}%</div>
+				</div>
+			</div>
+				`
+			})
+			subject_grade.innerHTML = html
+
+		} else {
+			alert('บางอย่างผิดพลาด')
+		}
+
+	}
+</script>
