@@ -22,7 +22,7 @@
 			<h1 style="padding-right: 21px;">Setting</h1><img style="width: 50px; height: 50px;" src="./img/settings.png"></div>
 		
 	</header>
-
+	<div style="padding-top: 6vh; margin-left: 3vh;"><h3>Username : <span id = 'user1'></span> </h3></div>
     <div style="padding-top: 6vh; margin-left: 3vh;"><h3>About Us</h3></div>
     <div style="padding-top: 6vh; margin-left: 3vh;"><h3>Help</h3></div>
     <div style="padding-top: 6vh; margin-left: 3vh;"><h3><a href="login.html">Log Out</a></h3></div>
@@ -39,3 +39,6 @@
 	<script src="main.js"></script>
 </body>
 </html>
+<script>
+	user1.innerText = localStorage.getItem('user')
+</script>

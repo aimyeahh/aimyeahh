@@ -152,13 +152,14 @@ app.post('/api/signup', (req, res) => {
     let password = req.body.password
     try {
         if (username && password && (password.length >= 8)) {
-            username = MD5(username)
+            username = username
             password = MD5(password)
             con.query('select * from member where username =  ? ', [username], function (error, results, fields) {
                 if (error) {
                     responseErr()
                 } else if (!results[0]) {
                     console.log(results)
+                    console.log('user : ',username)
                     con.query(`INSERT INTO member(username,password) VALUES ( ?, ? );`, [username, password], function (err, result) {
                         if (err) {
                             console.log(err)
@@ -205,7 +206,7 @@ app.post('/api/login', (req, res) => {
     }
     try {
         console.log(2)
-        username = MD5(username)
+        username = username
         password = MD5(password)
         if (username && password && (password.length >= 8)) {
             console.log(3)
@@ -244,7 +245,7 @@ app.post('/api/login', (req, res) => {
     }
 })
 
-app.get('/api/profile', (req, res) => {
+app.post('/api/profile', (req, res) => {
     const token = req.body.token;
     if (!token) {
         return res.status(401).json({ msg: 'Unauthorized', code : -1 });
