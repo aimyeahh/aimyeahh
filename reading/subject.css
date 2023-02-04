@@ -18,7 +18,7 @@ body {
 	height: 56px;
 	right: 5vw;
 	bottom: 12vh;
-	background: #cb5e38;
+	background: #c862a2;
 	box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.14), 0px 1px 18px rgba(0, 0, 0, 0.12), 0px 3px 5px rgba(0, 0, 0, 0.2);
 	border-radius: 32px;
 	z-index: 1
@@ -139,7 +139,7 @@ img {
 .slide-grade {
 	width: 342px;
 	height: 71px;
-	background: #D9D9D9;
+	background: #ece1eb;
 	border-radius: 10px;
 	position: relative;
 	margin-top: 15px;
@@ -153,7 +153,7 @@ img {
 	top: 50%;
 	transform: translate(-50%, -50%);
 	border-radius: 25px;
-	background: #535353;
+	background: #c862a2;
 }
 
 .grade-text {
@@ -176,7 +176,8 @@ img {
 
 .grade-text-title {
 	font-size: 20px;
-	font-weight: 600
+	font-weight: 600;
+	color: #c862a2;
 }
 
 .grade-text-title+div {
