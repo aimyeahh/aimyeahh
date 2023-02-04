@@ -13,98 +13,7 @@
 	<title>POST file</title>
 
 	<link rel="stylesheet" href="setting.css" />
-
-	<style>
-		.main-body {
-			background-color: white;
-			height: 90vh;
-			padding: 15px;
-		}
-
-		.main-body>.body {
-			background-color: #FFFFFF;
-			position: relative;
-		}
-
-		.search {
-			width: 100%;
-			height: 4vh;
-			background: #FFFFFF;
-			border-radius: 9px;
-			display: inline-flex;
-			justify-content: space-between;
-		}
-
-		.search>input {
-			width: 70%;
-			height: 100%;
-			border-radius: 9px;
-		}
-
-		.icon-search {
-			width: 5%;
-			background-repeat: no-repeat;
-			display: inline-flex;
-			justify-content: center;
-			align-items: center;
-			top: 1vh;
-			left: 57vw;
-			position: absolute;
-
-		}
-
-		.imgfev {
-			display: flex;
-			height: 100%;
-			justify-content: center;
-			align-items: center;
-			object-fit: contain;
-		}
-
-		.grid-container {
-			margin-top: 10px;
-			display: grid;
-			grid-template-columns: auto auto;
-			gap: 10px;
-			padding: 10px;
-		}
-
-		.grid-container>div {
-			background-color: rgba(255, 255, 255, 0.8);
-			border: 1px solid black;
-			height: 220px;
-			width: 100%;
-			text-align: center;
-			font-size: 10px;
-		}
-
-		.card-container {
-			border-radius: 10px;
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
-			font-size: 1rem;
-			padding-top: 10px;
-
-		}
-		.card-container > .box{
-			background-color: #505050; width: 80%; height: 80%;
-		}
-		.card-container > .container-content{
-			padding-top: 5px;
-			width: 80%;
-		}
-		.container-content{
-			display: flex;
-			justify-content: space-between;
-		}
-		.container-content > .content{
-			display: flex;
-			flex-direction: column;
-			align-items: start;
-		}
-	</style>
+	<link rel="stylesheet" href="./css/postfile.css">
 </head>
 
 <body>
@@ -118,7 +27,7 @@
 			</div>
 			<div style="overflow: scroll;height: 84vh;">
 				<!-- grid layout  -->
-				<div class="grid-container">
+				<div class="grid-container" style="display: none;">
 					<!-- content -->
 					<div class="card-container">
 						<div class="box"></div>
@@ -152,8 +61,16 @@
 							<span>start</span>
 						</div>
 					</div>
-					
-					
+				</div>
+				<!-- upload file -->
+				<div class="upload-container">
+					<div class="b1">
+						<label id="" style="margin-right: 5px;" for="head-uploadfile">หัวข้อ</label>
+						<input id="upload_getvalue" class="update-input" type="text"name='head-uploadfile'>
+					</div>
+					<div>
+						
+					</div>
 				</div>
 			</div>
 
