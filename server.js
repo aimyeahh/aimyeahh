@@ -6,6 +6,23 @@ const MD5 = require('md5');
 const mysql = require('mysql');
 const jwt = require('jsonwebtoken');
 const secretKey = 'mypasswordissohard'
+const fs = require('fs');
+const multer = require('multer');
+// configure storage engine
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, "./uploads");
+    },
+    filename: function (req, file, cb) {
+      cb(null, Date.now() + "-" + file.originalname);
+    }
+  });
+  
+  // initialize upload object
+  const upload = multer({
+    storage: storage
+  });
+
 let con = mysql.createConnection({
     host: "localhost",
     user: "root",
@@ -21,6 +38,7 @@ app.use(cors())
 app.use(bodyParser.json())
 let urlencodedParser = bodyParser.urlencoded({ extended: false })
 app.use(express.static('reading'))
+app.use(express.static('uploads'))
 
 app.listen(3000, () => {
     console.log('this server run on port 3000')
@@ -323,4 +341,20 @@ app.post('/api/subject/:subject',(req,res)=>{
         })
     }
 })
+
+app.post('/api/upload',upload.array('file'), (req, res) => {
+    try{
+        const file = req.file;
+        if (!file) {
+            res.status(500).send("No file uploaded.");
+          }else{
+            res.status(200).json({
+                msg : 'success',
+                data : JSON.stringify(file)
+            })
+          }
+    }catch(err){
+        console.log(err)
+    }
+  });
 
