@@ -20,6 +20,7 @@ con.connect(function (err) {
 app.use(cors())
 app.use(bodyParser.json())
 let urlencodedParser = bodyParser.urlencoded({ extended: false })
+app.use(express.static('reading'))
 
 app.listen(3000, () => {
     console.log('this server run on port 3000')

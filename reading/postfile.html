@@ -66,16 +66,43 @@
 			display: grid;
 			grid-template-columns: auto auto;
 			gap: 10px;
-			background-color: #2196F3;
 			padding: 10px;
 		}
 
 		.grid-container>div {
 			background-color: rgba(255, 255, 255, 0.8);
 			border: 1px solid black;
-			height: 159px;
+			height: 220px;
+			width: 100%;
 			text-align: center;
-			font-size: 30px;
+			font-size: 10px;
+		}
+
+		.card-container {
+			border-radius: 10px;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			font-size: 1rem;
+			padding-top: 10px;
+
+		}
+		.card-container > .box{
+			background-color: #505050; width: 80%; height: 80%;
+		}
+		.card-container > .container-content{
+			padding-top: 5px;
+			width: 80%;
+		}
+		.container-content{
+			display: flex;
+			justify-content: space-between;
+		}
+		.container-content > .content{
+			display: flex;
+			flex-direction: column;
+			align-items: start;
 		}
 	</style>
 </head>
@@ -90,18 +117,46 @@
 				<img src="./img/fav.svg" class="imgfev" alt="">
 			</div>
 			<div style="overflow: scroll;height: 84vh;">
+				<!-- grid layout  -->
 				<div class="grid-container">
-					<div>1</div>
-					<div>2</div>
-					<div>3</div>
-					<div>4</div>
-					<div>5</div>
-					<div>6</div>
-					<div>7</div>
-					<div>8</div>
+					<!-- content -->
+					<div class="card-container">
+						<div class="box"></div>
+						<div class="container-content">
+							<div class="content">
+								<span>file upload</span>
+								<span>upload file by : Username</span>
+							</div>
+							<span>start</span>
+						</div>
+					</div>
+
+					<div class="card-container">
+						<div class="box"></div>
+						<div class="container-content">
+							<div class="content">
+								<span>file upload</span>
+								<span>upload file by : Username</span>
+							</div>
+							<span>start</span>
+						</div>
+					</div>
+
+					<div class="card-container">
+						<div class="box"></div>
+						<div class="container-content">
+							<div class="content">
+								<span>file upload</span>
+								<span>upload file by : Username</span>
+							</div>
+							<span>start</span>
+						</div>
+					</div>
+					
+					
 				</div>
 			</div>
-			
+
 		</div>
 	</div>
 	<div>
