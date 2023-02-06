@@ -1,45 +1,46 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <title>File Upload</title>
-  </head>
-  <body>
-   
-      <input type="file" id="fileInput" multiple>
-      <button id="uploadButton">Upload</button>
-        <a href="../1675514295855-BMW_logo_(gray).png">aaa</a>
-        <img src="1675509383713-bear.png" alt="">
+</head>
+
+<body>
+
+    <input type="file" id="fileInput" multiple>
+    <button id="uploadButton">Upload</button>
+    <a href="../1675514295855-BMW_logo_(gray).png">aaa</a>
+    <img src="1675509383713-bear.png" alt="">
     <script>
-      const input = document.querySelector('#fileInput');
-      const button = document.querySelector('#uploadButton');
-
-      button.addEventListener('click', (event) => {
-        const formData = new FormData();
-        event.preventDefault();
-        console.log('file', input.files)
-        formData.append('file', input.files[0]);
-
-        fetch('http://localhost:3000/api/upload', {
-          method: 'POST',
-          body: formData
-        })
-        .then(response => {
-          if (response.status === 200) {
-            return response.json();
-          }
-          throw new Error('Request failed');
-        })
-        .then(data => {
-          try {
-            if(data.msg == 'success'){
-                // location.reload()
+        let button = document.querySelector('#uploadButton');
+        button.addEventListener('click', (event) => {
+            let input = document.querySelector('#fileInput');
+            let formData = new FormData();
+            event.preventDefault();
+            
+            console.log('file', input.files)
+            for(let i = 0 ; i < input.files.length ; i++ ){
+                console.log('xxx')
+                formData.append('file', input.files[i]);
             }
-          } catch (error) {
-            console.log(data);
-          }
-        })
-        .catch(error => console.error(error));
-      });
+            console.log(formData)
+            fetch('http://localhost:3000/api/upload', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    try {
+                        if (data.msg == 'success') {
+                            // location.reload()
+                        }
+                    } catch (error) {
+                        console.log(data);
+                    }
+                })
+                .catch(error => console.log(error));
+        });
     </script>
-  </body>
+</body>
+
 </html>

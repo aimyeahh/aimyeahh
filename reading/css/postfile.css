@@ -116,6 +116,9 @@
 .b1.more {
     margin-top: 50px;
 }
+.b1.close {
+    display: none;
+}
 
 .update-input {
     width: 70vw;

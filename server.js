@@ -271,10 +271,10 @@ app.post('/api/profile', (req, res) => {
     } else {
         try {
             let decoded = jwt.verify(token, secretKey);
-            console.log(decoded)
+            // console.log(decoded)
             return res.status(200).json({ msg: 'success',code : 0, decoded });
         } catch (err) {
-            console.log('/api/profile/Err : ', err)
+            // console.log('/api/profile/Err : ', err)
             return res.status(401).json({ msg: 'Unauthorized', code : -2 });
         }
     }
@@ -344,9 +344,13 @@ app.post('/api/subject/:subject',(req,res)=>{
 
 app.post('/api/upload',upload.array('file'), (req, res) => {
     try{
-        const file = req.file;
-        if (!file) {
-            res.status(500).send("No file uploaded.");
+        let file = req.files;
+        console.log(file)
+        if (file[0]) {
+            res.status(400).json({
+                msg : 'bad',
+                data : JSON.stringify(file)
+            })
           }else{
             res.status(200).json({
                 msg : 'success',

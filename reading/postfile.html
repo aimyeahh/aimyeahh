@@ -75,15 +75,25 @@
 						<input id="upload_getvalue" class="update-input" type="text" name='head-uploadfile'>
 					</div>
 					<div class="b1 more">
-						<input type="file" name="filename" id="filename">
+						<input type="file" onchange="preview()" id="fileInput" multiple>
 					</div>
-					<div class="b1 more grid-img">
-						<div>1</div>
-						<div>1</div>
-						<div>1</div>
-						<div>1</div>
-						<div>1</div>
-
+					<div id="upload_imgs" class="b1 more grid-img close"></div>
+					<div id="upload_mock" class="b1 more grid-img">
+						<div>
+							<img src="" alt="">
+						</div>
+						<div>
+							<img src="" alt="">
+						</div>
+						<div>
+							<img src="" alt="">
+						</div>
+						<div>
+							<img src="" alt="">
+						</div>
+						<div>
+							<img src="" alt="">
+						</div>
 					</div>
 					<div class="b1">
 						<span class="fn1-a">แฮชแท็ก ( เลือกอย่างน้อย1 )</span>
@@ -101,7 +111,7 @@
 						</div>
 					</div>
 					<div style="margin-top: 50px; display: flex;justify-content: center;">
-						<div class="btnby-upload-file">
+						<div id="uploadButton" class="btnby-upload-file">
 							Upload file
 						</div>
 					</div>
@@ -125,23 +135,75 @@
 
 </html>
 <script>
+	let formData = ''
 	function swapupload() {
 		let swap = document.querySelector('.grid-container').getAttribute('class')
-		let post =  document.querySelector('.grid-container')
-		let upload =  document.querySelector('.upload-container')
-		if(swap.includes('open')){
+		let post = document.querySelector('.grid-container')
+		let upload = document.querySelector('.upload-container')
+		if (swap.includes('open')) {
 			post.classList.remove('open')
 			upload.classList.add('open')
-		}else{
+			formData = new FormData();
+			console.log('new FormData')
+			upload_imgs.innerHTML = ''
+			fileInput.value = ''
+			upload_mock.classList.remove('close')
+			upload_imgs.classList.add('close')
+			
+		} else {
 			post.classList.add('open')
 			upload.classList.remove('open')
 		}
 	}
-	function fev(id){
-		console.log(id.id)
+	function fev(id) {
 		let star = document.getElementById(id.id).src
-		star.includes('fevfullstar') ?  document.getElementById(id.id).src = './img/starnonfull.svg' :  document.getElementById(id.id).src = './img/fevfullstar.svg'
+		star.includes('fevfullstar') ? document.getElementById(id.id).src = './img/starnonfull.svg' : document.getElementById(id.id).src = './img/fevfullstar.svg'
 		console.log(star)
 	}
+	function preview() {
+		// console.log('xxxx',event.target.files)
+		let obj_length =  event.target.files.length
+		let input = event.target
+		let html = upload_imgs.innerHTML
+		for (let i = 0 ; i < obj_length ;i++){
+			formData.append('file', input.files[i]);
+			console.log('formData' , formData)
+			let src = URL.createObjectURL(event.target.files[i]);
+			html += `<div>
+							<img src="${src}" alt="">
+					</div>`
+		}
+		upload_imgs.innerHTML = html
+		upload_imgs.classList.remove('close')
+		upload_mock.classList.add('close')
+		
+	}
+
+	const button = document.querySelector('#uploadButton');
+	button.addEventListener('click', (event) => {
+		
+		event.preventDefault();
+
+		// console.log('file', input.files)
+		// for (let i = 0; i < input.files.length; i++) {
+		// 	formData.append('file', input.files[i]);
+		// }
+		console.log(formData)
+		fetch('http://localhost:3000/api/upload', {
+			method: 'POST',
+			body: formData
+		})
+			.then(response => response.json())
+			.then(data => {
+				try {
+					if (data.msg == 'success') {
+						// location.reload()
+					}
+				} catch (error) {
+					console.log(data);
+				}
+			})
+			.catch(error => console.log(error));
+	});
 
 </script>
