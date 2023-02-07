@@ -194,7 +194,7 @@
 			console.log('formData' , formData)
 			let src = URL.createObjectURL(event.target.files[i]);
 			html += `<div>
-							<img src="${src}" alt="">
+							<img class='img-width' src="${src}" alt="">
 					</div>`
 		}
 		upload_imgs.innerHTML = html
@@ -212,7 +212,7 @@
 		// for (let i = 0; i < input.files.length; i++) {
 		// 	formData.append('file', input.files[i]);
 		// }
-		console.log(formData)
+		// console.log(formData)
 		fetch('http://localhost:3000/api/upload', {
 			method: 'POST',
 			body: formData

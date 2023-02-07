@@ -56,7 +56,7 @@ app.post('/api/todolist', (req, res) => {
     let user = decodeToken(token).username
     con.query(`select * from todolist where username = ?`,[user],function (err, result) {
         if (err) throw err;
-        console.log("Result: " + JSON.stringify(result));
+        // console.log("Result: " + JSON.stringify(result));
         let data = JSON.stringify(result)
         data = JSON.parse(data)
         res.status(200).json({
@@ -345,8 +345,8 @@ app.post('/api/subject/:subject',(req,res)=>{
 app.post('/api/upload',upload.array('file'), (req, res) => {
     try{
         let file = req.files;
-        console.log(file)
-        if (file[0]) {
+        console.log(file[0])
+        if (!file[0]) {
             res.status(400).json({
                 msg : 'bad',
                 data : JSON.stringify(file)
@@ -357,7 +357,9 @@ app.post('/api/upload',upload.array('file'), (req, res) => {
                 data : JSON.stringify(file)
             })
           }
+          console.log('uploads success')
     }catch(err){
+        console.log('uploads fale')
         console.log(err)
     }
   });
