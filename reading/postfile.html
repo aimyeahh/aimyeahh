@@ -46,7 +46,7 @@
 			<div class="search">
 				<input type="text" name="" id="">
 				<img class="icon-search" src="./img/iconsearch.svg"></img>
-				<img onclick="swapupload()" style="object-fit: contain;" src="./img/upload.svg" alt="upload">
+				<img onclick="swapupload()" style="object-fit: contain; " src="./img/upload.png" alt="upload">
 				<img src="./img/fav.png" class="imgfev" alt="">
 			</div>
 			<div style="overflow: scroll;height: 84vh;">
@@ -99,7 +99,8 @@
 						<input id="upload_getvalue" class="update-input" type="text" name='head-uploadfile'>
 					</div>
 					<div class="b1 more">
-						<input type="file" onchange="preview()" id="fileInput" multiple>
+						<label id="" for="head-uploadfile">เลือกไฟล์ ( png , jpg , pdf )</label>
+						<input style="margin-top: 5px;" type="file" onchange="preview()" id="fileInput" multiple>
 					</div>
 					<div id="upload_imgs" class="b1 more grid-img close"></div>
 					<div id="upload_mock" class="b1 more grid-img">
