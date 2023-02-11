@@ -5,8 +5,35 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="subject.css" />
 </head>
-<body>
-    
+<div id="modal_grade1" class="modal-main">
+    <div class="modal-subject">
+        <div class="menu-top">
+            <div onclick="closeModalGrade()"><img class="img-close-svg" src="./img/Vector.svg" alt=""></div>
+            <div>คำนวณ</div>
+            <div onclick="saveGrade()">บันทึก</div>
+        </div>
+        <hr>
+        <div class="subject-save">
+            <div class="input1">
+                <div>หัวข้อ</div>
+                <input id="save1" type="text">
+            </div>
+            <div class="input1 i2">
+                <div>จำนวนข้อทั้งหมด</div>
+                <input id="save2" type=" text">
+            </div>
+            <div class="input1 i3 red">
+                <div>จำนวนข้อที่ถูกต้อง</div>
+                <input id="save3" type=" text">
+            </div>
+            <br>
+            <div id="warning1" class="warning1">จำนวนข้อที่ถูกต้องมากกว่าข้อทั้งหมด</div>
+        </div>
+
+    </div>
+
+</div>
 </body>
 </html>
