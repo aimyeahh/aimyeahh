@@ -341,44 +341,6 @@ app.post('/api/subject/:subject', (req, res) => {
         })
     }
 })
-// app.post('/api/upload',upload.array('file'), (req, res) => {
-//     try{
-//         let file = req.files;
-//         console.log(file[0])
-//         let head = req.body.head
-//         let hash_tags = req.body.hashtages
-//         let user =  req.body.user
-//         // console.log('user',file[0] , head , hash_tags , user)
-//         if (!file[0]) {
-//             res.status(400).json({
-//                 msg : 'bad',
-//                 data : JSON.stringify(file)
-//             })
-//           }else{
-//             console.log(file[0].path)
-//             con.query(`SELECT id FROM member where username = ? ;`,[user],(err,result)=>{
-//                 if(err) throw res.status(400).json({msg : 'query data base err'})
-//                 else{
-//                     console.log('xxx',result)
-//                     res.status(200).json({msg : 'success',data : result,code : 0})
-//                 }
-//             })
-//             res.status(200).json({
-//                 msg : 'success',
-//                 data : JSON.stringify(file)
-//             })
-//           }
-//           console.log('uploads success')
-//     }catch(err){
-//         console.log('uploads fale')
-//         console.log(err)
-//         res.status(400).json({
-//             msg : 'bad',
-//             data : JSON.stringify(file)
-//         })
-//     }
-//   });
-
 app.post('/api/upload', upload.array('file'), (req, res) => {
     try {
         let file = req.files;
@@ -394,28 +356,29 @@ app.post('/api/upload', upload.array('file'), (req, res) => {
         } else {
             let paths = []
             for (const data of file) {
-                paths.push(data.path)
+                paths.push(data.filename)
             }
             console.log(paths)
             con.query(`SELECT id FROM member where username = ? ;`, [user], (err, result) => {
                 if (err) {
                     console.log(err)
                     res.status(400).json({ msg: 'query data base err' })
-                } 
+                }
                 else {
                     console.log(result[0].id)
                     let id = result[0].id
-                    con.query(`INSERT INTO uploads_data (mid, path, hashtag, title) VALUES (?, ? ,? ,?)`,[id,paths.toString(),hash_tags.toString(),head],(err,results)=>{
+                    con.query(`INSERT INTO uploads_data (mid, path, hashtag, title, writer) VALUES (?, ? ,? , ?, ?)`, [id, paths.toString(), hash_tags.toString(), head, user], (err, results) => {
                         console.log(err)
                         if (err) res.status(400).json({ msg: 'query data base err' })
-                        else{
-                           if(results.insertId){
-                            res.status(200).json({ msg: 'success', data: [], code: 0 })
-                           }
+                        else {
+                            if (results.insertId) {
+                                res.status(200).json({ msg: 'success', data: [], code: 0 })
+    
+                            }
                         }
-                       
+
                     })
-                    
+
                 }
             })
         }
@@ -425,8 +388,30 @@ app.post('/api/upload', upload.array('file'), (req, res) => {
         console.log(err)
         res.status(400).json({
             msg: 'bad',
-            data: JSON.stringify(file)
         })
     }
 });
+app.get('/api/show/post', (req, res) => {
+    try {
+        con.query(`select id,hashtag ,path,title,writer from uploads_data`, (err, results) => {
+            if (err) res.status(400).json({ msg: 'query data base err' })
+            else {
+                res.status(200).json({ msg: 'success', data: results, code: 0 })
+            }
+        })
+    } catch (err) {
+        res.status(400).json({ msg: 'something err' })
+    }
+})
+app.post('/api/fev/:status', (req, res) => {
+    try {
+        let status = req.params.status
+        let id_change = req.body.id
+        let user = req.body.user
+
+        console.log(status)
+    } catch (err) {
+        res.status(400).json({ msg: 'something err' })
+    }
+})
 
