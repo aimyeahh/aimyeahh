@@ -403,13 +403,53 @@ app.get('/api/show/post', (req, res) => {
         res.status(400).json({ msg: 'something err' })
     }
 })
+app.post('/api/show/fev', (req, res) => {
+    try {
+        let token = req.body.token
+        let decoded = jwt.verify(token, secretKey);
+        let mid = decoded.mid
+        con.query(`SELECT ud_id,status FROM fev WHERE mid = ?`,[mid], (err, results) => {
+            if (err) res.status(400).json({ msg: 'query data base err' })
+            else {
+                res.status(200).json({ msg: 'success', data: results, code: 0 })
+            }
+        })
+    } catch (err) {
+        console.log(err)
+        res.status(400).json({ msg: 'something err' })
+    }
+})
 app.post('/api/fev/:status', (req, res) => {
     try {
         let status = req.params.status
         let id_change = req.body.id
-        let user = req.body.user
-
-        console.log(status)
+        let token = req.body.token
+        if(token && status && id_change){
+            let decoded = jwt.verify(token, secretKey);
+            let mid = decoded.mid
+            con.query(`select * from fev where mid = ? and ud_id = ?`,[mid,id_change] ,(err, results) => {
+                if (err) res.status(400).json({ msg: 'query data base err' })
+                if(results[0]){
+                    con.query(`update fev set status = ? where mid = ? and ud_id = ?  `,[status,mid,id_change] ,(err, results) => {
+                        if (err) res.status(400).json({ msg: 'query data base err' })
+                        if(results){
+                            res.status(200).json({ msg: 'success', code: 0 })
+                        }
+                    })
+                }else{
+                    con.query(`insert into fev (mid,ud_id,status) values(?,?,?)`,[mid,id_change,status] ,(err, results) => {
+                        if (err) res.status(400).json({ msg: 'query data base err' })
+                        if(results[0]){
+                            console.log(results)
+                            res.status(200).json({ msg: 'success', code: 0 })
+                        }
+                    })
+                }
+                
+            })
+        }else{
+            res.status(400).json({ msg: 'กรอกข้อมูลมาให้ครบ' })
+        }
     } catch (err) {
         res.status(400).json({ msg: 'something err' })
     }

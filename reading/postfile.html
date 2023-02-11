@@ -194,10 +194,31 @@
 			upload.classList.remove('open')
 		}
 	}
-	function fev(id,obj) {
+	async function fev(id, obj) {
 		let star = document.getElementById(id.id).src
 		star.includes('fevfullstar') ? document.getElementById(id.id).src = './img/starnonfull.svg' : document.getElementById(id.id).src = './img/fevfullstar.svg'
-		console.log(star)
+		// console.log(star)
+		let headersList = {
+			"Accept": "*/*", "Content-Type": "application/json"
+		}
+		const fetchgetFev = async (type) => {
+			console.log('obj', obj)
+			let response = await fetch('http://localhost:3000/api/fev/' + type, {
+				headers: headersList,
+				method: "POST",
+				body: JSON.stringify({
+					token: localStorage.getItem('token'),
+					id: obj
+				})
+			})
+			let data = await response.json()
+			return data
+		}
+		if (star.includes('fevfullstar')) {
+			fetchgetFev('off')
+		} else {
+			fetchgetFev('on')
+		}
 	}
 
 	function preview() {
@@ -252,6 +273,7 @@
 	async function render_post() {
 		let headersList = {
 			"Accept": "*/*",
+			"Content-Type": "application/json"
 		}
 		let response = await fetch("http://localhost:3000/api/show/post", {
 			method: "GET",
@@ -262,10 +284,22 @@
 		console.log(data);
 		data = data.data
 		let html = ''
+		let response_fev = await fetch("http://localhost:3000/api/show/fev", {
+			method: "POST",
+			body: JSON.stringify({
+				token:  localStorage.getItem('token')
+			}),
+			headers: headersList
+		});
+
+		let data_fev = await response_fev.json();
+		console.log(data_fev);
+		
 		data.map(post => {
 
 			let srcimg1 = post.path.split(',')[0]
-			console.log(srcimg1)
+			
+			// console.log(srcimg1)
 			html += `<div class="card-container">
 						<div class="box">
 							<img class="img-inbox" src="http://localhost:3000/${srcimg1}" alt="">
