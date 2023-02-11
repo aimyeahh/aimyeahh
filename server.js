@@ -11,17 +11,17 @@ const multer = require('multer');
 // configure storage engine
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, "./uploads");
+        cb(null, "./uploads");
     },
     filename: function (req, file, cb) {
-      cb(null, Date.now() + "-" + file.originalname);
+        cb(null, Date.now() + "-" + file.originalname);
     }
-  });
-  
-  // initialize upload object
-  const upload = multer({
+});
+
+// initialize upload object
+const upload = multer({
     storage: storage
-  });
+});
 
 let con = mysql.createConnection({
     host: "localhost",
@@ -54,7 +54,7 @@ app.post('/api/todolist', (req, res) => {
     let token = req.body.token
     console.log(token)
     let user = decodeToken(token).username
-    con.query(`select * from todolist where username = ?`,[user],function (err, result) {
+    con.query(`select * from todolist where username = ?`, [user], function (err, result) {
         if (err) throw err;
         // console.log("Result: " + JSON.stringify(result));
         let data = JSON.stringify(result)
@@ -66,19 +66,19 @@ app.post('/api/todolist', (req, res) => {
     });
 
 })
-function decodeToken(token){
-    try{
-    let decoded = jwt.verify(token, secretKey);
-    console.log(decoded)
-    return decoded
-    }catch(err){
+function decodeToken(token) {
+    try {
+        let decoded = jwt.verify(token, secretKey);
+        console.log(decoded)
+        return decoded
+    } catch (err) {
         console.log('token :', err)
     }
 }
 app.post('/api/insert/todolist', (req, res) => {
     let text = req.body.text
     let token = req.body.token
-    try{
+    try {
         // let decoded = jwt.verify(token, secretKey);
         // console.log(typeof decoded , decoded.data[0].username)
         let user = decodeToken(token).username
@@ -97,7 +97,7 @@ app.post('/api/insert/todolist', (req, res) => {
                 })
             }
         });
-    }catch(err){
+    } catch (err) {
         console.log(err)
         res.status(400).json({
             msg: 'bad',
@@ -178,7 +178,7 @@ app.post('/api/signup', (req, res) => {
                     responseErr()
                 } else if (!results[0]) {
                     console.log(results)
-                    console.log('user : ',username)
+                    console.log('user : ', username)
                     con.query(`INSERT INTO member(username,password) VALUES ( ?, ? );`, [username, password], function (err, result) {
                         if (err) {
                             console.log(err)
@@ -241,10 +241,10 @@ app.post('/api/login', (req, res) => {
                     ON data.mid = member.id
                     WHERE todolist.username = ?`, [username], (error, data) => {
                         if (error) responseErr()
-                        else { 
+                        else {
                             let mid = results[0].id
                             // console.log(mid)
-                            const token = jwt.sign({ data , username , mid }, secretKey);
+                            const token = jwt.sign({ data, username, mid }, secretKey);
                             // const  decoded = jwt.verify(token, secretKey);
                             console.log('token', token)
                             responseSuccess('login', token)
@@ -267,20 +267,20 @@ app.post('/api/login', (req, res) => {
 app.post('/api/profile', (req, res) => {
     const token = req.body.token;
     if (!token) {
-        return res.status(401).json({ msg: 'Unauthorized', code : -1 });
+        return res.status(401).json({ msg: 'Unauthorized', code: -1 });
     } else {
         try {
             let decoded = jwt.verify(token, secretKey);
             // console.log(decoded)
-            return res.status(200).json({ msg: 'success',code : 0, decoded });
+            return res.status(200).json({ msg: 'success', code: 0, decoded });
         } catch (err) {
             // console.log('/api/profile/Err : ', err)
-            return res.status(401).json({ msg: 'Unauthorized', code : -2 });
+            return res.status(401).json({ msg: 'Unauthorized', code: -2 });
         }
     }
 })
-app.post('/api/subject/insert',(req,res)=>{
-    try{
+app.post('/api/subject/insert', (req, res) => {
+    try {
         let token = req.body.token
         let subject = req.body.subject
         let data = req.body.data
@@ -288,79 +288,145 @@ app.post('/api/subject/insert',(req,res)=>{
         // console.log('token in subject insert', subject)
         // let user = decodeToken(token).username
         let mid = decodeToken(token).mid
-       
-        if(token && subject && data){
+
+        if (token && subject && data) {
             con.query(`insert into data (mid,subject,ref1,ref2,ref3) values (?,?,?,?,?)`,
-            [mid,subject,data.subject,data.num_all+'',data.num_correct+'']
-            ,function (error, results, fields){
-                if(error) {
-                    console.log(error)
-                    res.status(400).json({msg : 'query data base err'})
-                }
-                else{
-                    res.status(200).json({msg : 'success',code : 0})
-                }
-            })
-        }else{
+                [mid, subject, data.subject, data.num_all + '', data.num_correct + '']
+                , function (error, results, fields) {
+                    if (error) {
+                        console.log(error)
+                        res.status(400).json({ msg: 'query data base err' })
+                    }
+                    else {
+                        res.status(200).json({ msg: 'success', code: 0 })
+                    }
+                })
+        } else {
             res.status(400).json({
-                msg : 'something wrong',
-                code : -2
+                msg: 'something wrong',
+                code: -2
             })
         }
-    }catch(err){
+    } catch (err) {
         console.log(err)
         res.status(400).json({
-            msg : err,
-            err :err,
-            code : -1
+            msg: err,
+            err: err,
+            code: -1
         })
     }
 })
 
-app.post('/api/subject/:subject',(req,res)=>{
-    try{
-        let token  = req.body.token
-        console.log('token subject' ,token)
+app.post('/api/subject/:subject', (req, res) => {
+    try {
+        let token = req.body.token
+        console.log('token subject', token)
         let mid = decodeToken(token).mid
         let subject = req.params.subject
         // console.log(decodeToken(token))
-        con.query(`select * from data where subject = ? && mid = ? `,[subject,mid],(err,result)=>{
-            if(err) {
+        con.query(`select * from data where subject = ? && mid = ? `, [subject, mid], (err, result) => {
+            if (err) {
                 console.log(err)
-                res.status(400).json({msg : 'query data base err'})
+                res.status(400).json({ msg: 'query data base err' })
             }
-            else{
-                res.status(200).json({msg : 'success',data : result,code : 0})
+            else {
+                res.status(200).json({ msg: 'success', data: result, code: 0 })
             }
         })
-    }catch(err){
+    } catch (err) {
         console.log(err)
         res.status(400).json({
             msg: 'something err',
-            code : -1
+            code: -1
         })
     }
 })
+// app.post('/api/upload',upload.array('file'), (req, res) => {
+//     try{
+//         let file = req.files;
+//         console.log(file[0])
+//         let head = req.body.head
+//         let hash_tags = req.body.hashtages
+//         let user =  req.body.user
+//         // console.log('user',file[0] , head , hash_tags , user)
+//         if (!file[0]) {
+//             res.status(400).json({
+//                 msg : 'bad',
+//                 data : JSON.stringify(file)
+//             })
+//           }else{
+//             console.log(file[0].path)
+//             con.query(`SELECT id FROM member where username = ? ;`,[user],(err,result)=>{
+//                 if(err) throw res.status(400).json({msg : 'query data base err'})
+//                 else{
+//                     console.log('xxx',result)
+//                     res.status(200).json({msg : 'success',data : result,code : 0})
+//                 }
+//             })
+//             res.status(200).json({
+//                 msg : 'success',
+//                 data : JSON.stringify(file)
+//             })
+//           }
+//           console.log('uploads success')
+//     }catch(err){
+//         console.log('uploads fale')
+//         console.log(err)
+//         res.status(400).json({
+//             msg : 'bad',
+//             data : JSON.stringify(file)
+//         })
+//     }
+//   });
 
-app.post('/api/upload',upload.array('file'), (req, res) => {
-    try{
+app.post('/api/upload', upload.array('file'), (req, res) => {
+    try {
         let file = req.files;
-        console.log(file[0])
-        if (!file[0]) {
+        let head = req.body.head
+        let hash_tags = req.body.hashtages
+        let user = req.body.user
+        console.log(file[0], head, hash_tags, user)
+        if (!file[0] || !head || !hash_tags || !user) {
             res.status(400).json({
-                msg : 'bad',
-                data : JSON.stringify(file)
+                msg: 'bad',
+                data: JSON.stringify(file)
             })
-          }else{
-            res.status(200).json({
-                msg : 'success',
-                data : JSON.stringify(file)
+        } else {
+            let paths = []
+            for (const data of file) {
+                paths.push(data.path)
+            }
+            console.log(paths)
+            con.query(`SELECT id FROM member where username = ? ;`, [user], (err, result) => {
+                if (err) {
+                    console.log(err)
+                    res.status(400).json({ msg: 'query data base err' })
+                } 
+                else {
+                    console.log(result[0].id)
+                    let id = result[0].id
+                    con.query(`INSERT INTO uploads_data (mid, path, hashtag, title) VALUES (?, ? ,? ,?)`,[id,paths.toString(),hash_tags.toString(),head],(err,results)=>{
+                        console.log(err)
+                        if (err) res.status(400).json({ msg: 'query data base err' })
+                        else{
+                           if(results.insertId){
+                            res.status(200).json({ msg: 'success', data: [], code: 0 })
+                           }
+                        }
+                       
+                    })
+                    
+                }
             })
-          }
-          console.log('uploads success')
-    }catch(err){
+        }
+        console.log('uploads success')
+    } catch (err) {
         console.log('uploads fale')
         console.log(err)
+        res.status(400).json({
+            msg: 'bad',
+            data: JSON.stringify(file)
+        })
     }
-  });
+});
 

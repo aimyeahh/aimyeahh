@@ -102,7 +102,7 @@
 						<label id="" for="head-uploadfile">เลือกไฟล์ ( png , jpg , pdf )</label>
 						<input style="margin-top: 5px;" type="file" onchange="preview()" id="fileInput" multiple>
 					</div>
-					<div id="upload_imgs" class="b1 more grid-img close"></div>
+					<div id="upload_imgs" class="b1 more grid-img-show close"></div>
 					<div id="upload_mock" class="b1 more grid-img">
 						<div>
 							<img src="" alt="">
@@ -174,7 +174,7 @@
 			fileInput.value = ''
 			upload_mock.classList.remove('close')
 			upload_imgs.classList.add('close')
-			
+			upload_getvalue.value = ''
 		} else {
 			post.classList.add('open')
 			upload.classList.remove('open')
@@ -214,6 +214,9 @@
 		// 	formData.append('file', input.files[i]);
 		// }
 		// console.log(formData)
+		formData.append('user', localStorage.getItem('user'));
+		formData.append('head', upload_getvalue.value);
+		formData.append('hashtages', ['#ไทย','#eng']);
 		fetch('http://localhost:3000/api/upload', {
 			method: 'POST',
 			body: formData
@@ -223,7 +226,13 @@
 				try {
 					if (data.msg == 'success') {
 						// location.reload()
+						
+						
 					}
+					swapupload()
+						setTimeout(()=>{
+							swapupload()
+						},1000)
 				} catch (error) {
 					console.log(data);
 				}
