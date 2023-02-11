@@ -44,7 +44,7 @@
 				<input type="text" name="" id="">
 				<img class="icon-search" src="./img/iconsearch.svg"></img>
 				<img onclick="swapupload()" style="object-fit: contain; " src="./img/upload.png" alt="upload">
-				<img src="./img/fav.png" class="imgfev" alt="">
+				<img src="./img/fav.png" onclick="fillter_Fev()" class="imgfev" alt="">
 			</div>
 			<div style="overflow: scroll;height: 84vh;">
 				<!-- grid layout  -->
@@ -219,6 +219,7 @@
 		} else {
 			fetchgetFev('on')
 		}
+		// render_post()
 	}
 
 	function preview() {
@@ -270,6 +271,8 @@
 			.catch(error => console.log(error));
 	});
 	render_post()
+	let GLOBAL_POST_DATA = ''
+	let GLOBAL_FEV_DATA = ''
 	async function render_post() {
 		let headersList = {
 			"Accept": "*/*",
@@ -283,11 +286,12 @@
 		let data = await response.json();
 		console.log(data);
 		data = data.data
+		GLOBAL_POST_DATA = data
 		let html = ''
 		let response_fev = await fetch("http://localhost:3000/api/show/fev", {
 			method: "POST",
 			body: JSON.stringify({
-				token:  localStorage.getItem('token')
+				token: localStorage.getItem('token')
 			}),
 			headers: headersList
 		});
@@ -295,12 +299,11 @@
 		let data_fev = await response_fev.json();
 		console.log(data_fev);
 		let fillter_fev = data_fev.data
-		let arr_forStar = []
-		fillter_fev = fillter_fev.filter( data => {
+		fillter_fev = fillter_fev.filter(data => {
 			return data.status == 'on'
 		}).map(d => d.ud_id)
-		console.log('xxx',fillter_fev)
-		
+		GLOBAL_FEV_DATA = fillter_fev
+
 		data.map(post => {
 
 			let srcimg1 = post.path.split(',')[0]
@@ -335,5 +338,43 @@
 				URL.revokeObjectURL(href);
 			});
 	};
+	let switch_fev = false
+	function fillter_Fev() {
+		console.log('switch',switch_fev)
+		switch_fev = !switch_fev
+		let html = ''
+		let fillter_fev = ''
+		fillter_fev = GLOBAL_FEV_DATA
+		let data = GLOBAL_POST_DATA
+			if (switch_fev) {
+			data.map(post => {
+				let srcimg1 = post.path.split(',')[0]
+				let fev = fillter_fev.includes(post.id) ? './img/fevfullstar.svg' : './img/starnonfull.svg'
+				if (fillter_fev.includes(post.id)) {
+					html += `<div class="card-container">
+						<div class="box">
+							<img class="img-inbox" src="http://localhost:3000/${srcimg1}" alt="">
+						</div>
+						<div class="container-content">
+							<div class="content">
+								<span>${post.title}</span>
+								<span>upload file by : ${post.writer}</span>
+							</div>
+							<span>
+								<img id="${'img' + post.id}" class="img-star" onclick="fev(this,${post.id})" src="${fev}" alt="">
+							</span>
+						</div>
+					</div>`
+				} else {
+					html += ''
+				}
+			})
+			showallpost.innerHTML = html
+		} else {
+			render_post()
+		}
+		
+
+	}
 
 </script>
