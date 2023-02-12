@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .card-container {
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    padding-top: 10px;
+
+}
+.card-container>.box {
+    background-color: #f6f6f6;
+    width: 86%;
+    height: 80%;
+    border-radius: 7px;
+    box-shadow: 0px 0px 1px 1px #e5e5e5;
+    display: flex;
+    text-align: center;
+}
+
+.img-inbox{
+    width: 100%;
+}
+
+.container-content {
+    display: flex;
+    justify-content: space-between;
+}
+.card-container>.container-content {
+    padding-top: 5px;
+    width: 80%;
+}
+
+.container-content>.content {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+.img-star{
+ width: 20px;
+}
+</style>
+<body>
+
+    <div class="card-container">
+        <div class="box">
+            <img class="img-inbox" src="http://localhost:3000/1676087960612-bear.png" alt="">
+        </div>
+    </div>
+
+    
+    <script>
+        render_post()
+	let GLOBAL_POST_DATA = ''
+	let GLOBAL_FEV_DATA = ''
+	async function render_post() {
+		let headersList = {
+			"Accept": "*/*",
+			"Content-Type": "application/json"
+		}
+		let response = await fetch("http://localhost:3000/api/show/post", {
+			method: "GET",
+			headers: headersList
+		});
+
+		let data = await response.json();
+		console.log(data);
+		data = data.data
+		GLOBAL_POST_DATA = data
+		let html = ''
+		let response_fev = await fetch("http://localhost:3000/api/show/fev", {
+			method: "POST",
+			body: JSON.stringify({
+				token: localStorage.getItem('token')
+			}),
+			headers: headersList
+		});
+
+		let data_fev = await response_fev.json();
+		console.log(data_fev);
+		let fillter_fev = data_fev.data
+		fillter_fev = fillter_fev.filter(data => {
+			return data.status == 'on'
+		}).map(d => d.ud_id)
+		GLOBAL_FEV_DATA = fillter_fev
+
+		data.map(post => {
+
+			let srcimg1 = post.path.split(',')[0]
+			let fev = fillter_fev.includes(post.id) ? './img/fevfullstar.svg' : './img/starnonfull.svg'
+			html += `<div class="card-container">
+						<div class="box">
+							<img class="img-inbox" src="http://localhost:3000/${srcimg1}" alt="">
+						</div>
+						<div class="container-content">
+							<div class="content">
+								<span>${post.title}</span>
+								<span>upload file by : ${post.writer}</span>
+							</div>
+							<span>
+								<img id="${'img' + post.id}" class="img-star" onclick="fev(this,${post.id})" src="${fev}" alt="">
+							</span>
+						</div>
+					</div>`
+		})
+		showallpost.innerHTML = html
+	}
+	function downloadFile(url, test) {
+		fetch(url, { method: 'get', mode: 'no-cors', referrerPolicy: 'no-referrer' })
+			.then(res => res.blob())
+			.then(res => {
+				const aElement = document.createElement('a');
+				aElement.setAttribute('download', fileName);
+				const href = URL.createObjectURL(res);
+				aElement.href = href;
+				aElement.setAttribute('target', '_blank');
+				aElement.click();
+				URL.revokeObjectURL(href);
+			});
+	};
+    </script>
+</body>
+</html>
