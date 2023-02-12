@@ -88,6 +88,7 @@
 }
 .img-inbox{
     width: 100%;
+    object-fit: contain;
 }
 .card-container>.container-content {
     padding-top: 5px;
