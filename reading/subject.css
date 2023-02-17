@@ -119,6 +119,7 @@ img {
 	height: 7vh;
 	justify-content: center;
 	align-items: center;
+	background-color: whitesmoke;
 }
 
 .modal-subject>.menu-top>div {
@@ -191,7 +192,8 @@ img {
 }
 
 .subject-save {
-	background-color: none;
+	background-image: url(./img/rainbow.jpeg);
+	background-size: 100% 100%;
 	padding: 20px;
 	height: 100%;
 }
@@ -208,6 +210,7 @@ img {
 	border-right: none;
 	outline: none;
 	border-color: none;
+	background-color: #fadbe1;
 }
 .subject-save>.input1>.red {
 	
