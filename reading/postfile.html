@@ -14,6 +14,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<link rel="stylesheet" href="setting.css" />
 	<link rel="stylesheet" href="./css/postfile.css">
+	<link rel="stylesheet" href="download.css" />
 </head>
 <style>
 	.navbar a {
@@ -50,14 +51,14 @@
 				<!-- grid layout  -->
 				<div id="showallpost" class="grid-container open">
 					<!-- content -->
-					<div class="card-container">
-						<div class="box">
+					<!-- <div class="card-container">
+						<div class="box" >
 							<img class="img-inbox" src="http://localhost:3000/1676087960612-bear.png" alt="">
 						</div>
 						<div class="container-content">
 							<div class="content">
 								<span>file upload</span>
-								<span>upload file by : Username</span>
+								<span style="text-align: start;">upload file by : Username</span>
 							</div>
 							<span>
 								<img id="id1" class="img-star" onclick="fev(this)" src="./img/starnonfull.svg" alt="">
@@ -65,13 +66,13 @@
 						</div>
 					</div>
 					<div class="card-container">
-						<div class="box">
+						<div class="box" '>
 							<img class="img-inbox" src="http://localhost:3000/1676087960612-bear.png" alt="">
 						</div>
 						<div class="container-content">
 							<div class="content">
 								<span>file upload</span>
-								<span>upload file by : Username</span>
+								<span style="text-align: start;">upload file by : Username</span>
 							</div>
 							<span>
 								<img id="id1" class="img-star" onclick="fev(this)" src="./img/starnonfull.svg" alt="">
@@ -79,31 +80,7 @@
 						</div>
 					</div>
 
-					<div class="card-container">
-						<div class="box"></div>
-						<div class="container-content">
-							<div class="content">
-								<span>file upload</span>
-								<span>upload file by : Username</span>
-							</div>
-							<span>
-								<img class="img-star" onclick="fev(this)" src="./img/fevfullstar.svg" alt="">
-							</span>
-						</div>
-					</div>
-
-					<div class="card-container">
-						<div class="box"></div>
-						<div class="container-content">
-							<div class="content">
-								<span>file upload</span>
-								<span>upload file by : Username</span>
-							</div>
-							<span>
-								<img class="img-star" onclick="fev(this)" src="./img/fevfullstar.svg" alt="">
-							</span>
-						</div>
-					</div>
+					 -->
 				</div>
 				<!-- upload file -->
 				<div class="upload-container">
@@ -169,11 +146,90 @@
 			<a href="setting.html" style="width: 20%;"><img style="width: 40px;" src="./img/setting_navbar.png"></a>
 		</div>
 	</div>
-	<script src="main.js"></script>
+	<div id="downloadpage" style="background-color: white;display: none;width: 100%; " class="downloadpage">
+		<div style="display: flex; height: 5vh; flex-direction: row; align-items: center;">
+			<div style="width: 50%; padding-left: 10px;" onclick="downloadpage.style.display = 'none'">
+				<span>close</span>
+			</div>
+			<div onclick="downloadImage(For_Download_Image)" style="width: 50%; text-align: end;padding-right: 10px;">
+				<span>download</span>
+			</div>
+		</div>
+
+		<div id="showoimgdownload2" class="slideshow-container">
+
+			<div class="mySlides fade">
+				<div class="numbertext">1 / 3</div>
+				<img src="./img/testpic1.jpg" style="width:100%; height: 80vh;">
+				<!-- <div class="text">Caption Text</div> -->
+			</div>
+
+			<div class="mySlides fade">
+				<div class="numbertext">2 / 3</div>
+				<img src="./img/testpic2.jpg" style="width:100%; height: 80vh;">
+				<div class="text">Caption Two</div>
+			</div>
+
+			<div class="mySlides fade">
+				<div class="numbertext">3 / 3</div>
+				<img src="./img/testpic3.jpg" style="width:100%; height: 80vh;">
+				<div class="text">Caption Three</div>
+			</div>
+
+			<a class="prev" onclick="plusSlides(-1)">❮</a>
+			<a class="next" onclick="plusSlides(1)">❯</a>
+
+		</div>
+
+
+		<div id="showoimgdownload" style="margin-top: 10px;display: flex;overflow: scroll;" class="swipe">
+			<img style="width: 22%; height: 12vh;" src="./img/1.jpg">
+			<img style="width: 22%; height: 12vh;" src="./img/1.jpg">
+			<img style="width: 22%; height: 12vh;" src="./img/1.jpg">
+			<img style="width: 22%; height: 12vh;" src="./img/1.jpg">
+			<img style="width: 22%; height: 12vh;" src="./img/1.jpg">
+
+		</div>
+	</div>
+
 </body>
 
 </html>
+<script src="main.js"></script>
+
 <script>
+	// script dowload.js
+	// ---------------------------------------------------------------------------
+	let For_Download_Image = ''
+	let slideIndex = 1;
+	showSlides(slideIndex);
+
+	function plusSlides(n) {
+		showSlides(slideIndex += n);
+	}
+
+	function currentSlide(n) {
+		showSlides(slideIndex = n);
+	}
+
+	function showSlides(n) {
+		let i;
+		let slides = document.getElementsByClassName("mySlides");
+		let dots = document.getElementsByClassName("dot");
+		if (n > slides.length) { slideIndex = 1 }
+		if (n < 1) { slideIndex = slides.length }
+		for (i = 0; i < slides.length; i++) {
+			slides[i].style.display = "none";
+		}
+		for (i = 0; i < dots.length; i++) {
+			dots[i].className = dots[i].className.replace(" active", "");
+		}
+		let src = document.querySelector(`#showoimgdownload2 > div:nth-child(${slideIndex}) > img`).src
+		For_Download_Image = src
+		slides[slideIndex - 1].style.display = "block";
+	}
+	// ------------------------------------------------------------------------------------------
+
 	let formData = ''
 	function swapupload() {
 		let swap = document.querySelector('.grid-container').getAttribute('class')
@@ -276,19 +332,18 @@
 		let html = ''
 		let search_text = e.value
 		data.map(post => {
-			console.log(post.id)
 			let user_del = localStorage.getItem('user') === post.writer ? `<img style="width: 15px;margin-left:5px" class="" onclick="swal_remove(${post.id})" src="./img/del.svg" alt="">` : ''
 			if (post.hashtag.includes(search_text)) {
 				let srcimg1 = post.path.split(',')[0]
 				let fev = fillter_fev.includes(post.id) ? './img/fevfullstar.svg' : './img/starnonfull.svg'
 				html += `<div class="card-container">
-						<div class="box">
+						<div class="box" onclick='showdownload(${JSON.stringify(post)})'>
 							<img class="img-inbox" src="http://localhost:3000/${srcimg1}" alt="">
 						</div>
 						<div class="container-content">
 							<div class="content">
 								<span>${post.title}</span>
-								<span>upload file by : ${post.writer}</span>
+								<span style="text-align: start;">upload file by : ${post.writer}</span>
 							</div>
 							<span class="toflex">
 								<img id="${'img' + post.id}" class="img-star" onclick="fev(this,${post.id})" src="${fev}" alt="">
@@ -315,7 +370,7 @@
 			});
 
 			let data = await response.json();
-			console.log(data);
+
 			data = data.data
 			GLOBAL_POST_DATA = data
 			let html = ''
@@ -338,13 +393,13 @@
 				let srcimg1 = post.path.split(',')[0]
 				let fev = fillter_fev.includes(post.id) ? './img/fevfullstar.svg' : './img/starnonfull.svg'
 				html += `<div class="card-container">
-						<div class="box">
+						<div class="box" onclick='showdownload(${JSON.stringify(post)})'>
 							<img class="img-inbox" src="http://localhost:3000/${srcimg1}" alt="">
 						</div>
 						<div class="container-content">
 							<div class="content">
 								<span>${post.title}</span>
-								<span>upload file by : ${post.writer}</span>
+								<span style="text-align: start;">upload file by : ${post.writer}</span>
 							</div>
 							<span class="toflex">
 								<img id="${'img' + post.id}" class="img-star" onclick="fev(this,${post.id})" src="${fev}" alt="">
@@ -360,6 +415,37 @@
 			alert('something err')
 		}
 	}
+	function showdownload(obj) {
+		console.log(obj)
+		let imgToArr = obj.path.split(',')
+		let html = '' //image bar
+		let html2 = ''//main image
+		let allnum = imgToArr.length
+		imgToArr.forEach(e => {
+			html += `<img style="width: 22%; height: 12vh;" src="./${e}">`
+		});
+		imgToArr.forEach((e, index) => {
+			html2 += `
+			<div class="mySlides fade">
+				<div class="numbertext">${index + 1} / ${allnum}</div>
+				<img src="./${e}" style="width:100%; height: 80vh;">
+				<!-- <div class="text">Caption Text</div> -->
+			</div>`
+
+		});
+		html2 += `<a class="prev" onclick="plusSlides(-1)">❮</a>
+			<a class="next" onclick="plusSlides(1)">❯</a>`
+		console.log(imgToArr)
+		downloadpage.style.display = ''//open
+		showoimgdownload.innerHTML = html
+		showoimgdownload2.innerHTML = html2
+		setTimeout(() => {
+			plusSlides(1)
+		}, 50)
+		setTimeout(() => {
+			plusSlides(-1)
+		}, 50)
+	}
 	async function removeByuser(id) {
 		let headersList = {
 			"Accept": "*/*",
@@ -370,20 +456,20 @@
 				method: "POST",
 				body: JSON.stringify({
 					token: localStorage.getItem('token'),
-					'id' : id
+					'id': id
 				}),
 				headers: headersList
 			});
 
 			let data = await response.json();
-			console.log('xxxxxxxxxx',data)
-			if(data.msg === 'success'){
+			console.log('xxxxxxxxxx', data)
+			if (data.msg === 'success') {
 				console.log('yyy')
-				setTimeout(()=>{
+				setTimeout(() => {
 					render_post()
-				},1000)
+				}, 1000)
 				return true
-			}else{
+			} else {
 				return false
 			}
 		} catch (error) {
@@ -391,19 +477,12 @@
 		}
 
 	}
-	function downloadFile(url, test) {
-		fetch(url, { method: 'get', mode: 'no-cors', referrerPolicy: 'no-referrer' })
-			.then(res => res.blob())
-			.then(res => {
-				const aElement = document.createElement('a');
-				aElement.setAttribute('download', fileName);
-				const href = URL.createObjectURL(res);
-				aElement.href = href;
-				aElement.setAttribute('target', '_blank');
-				aElement.click();
-				URL.revokeObjectURL(href);
-			});
-	};
+	function downloadImage(url) {
+		var link = document.createElement("a");
+		link.download = url.slice(-20);
+		link.href = url;
+		link.click();
+	}
 	let switch_fev = false
 	async function fillter_Fev() {
 		await render_post()
@@ -419,13 +498,13 @@
 				let fev = fillter_fev.includes(post.id) ? './img/fevfullstar.svg' : './img/starnonfull.svg'
 				if (fillter_fev.includes(post.id)) {
 					html += `<div id='post_container${post.id}' class="card-container">
-						<div class="box">
+						<div class="box" onclick='showdownload(${JSON.stringify(post)})'>
 							<img class="img-inbox" src="http://localhost:3000/${srcimg1}" alt="">
 						</div>
 						<div class="container-content">
 							<div class="content">
 								<span>${post.title}</span>
-								<span>upload file by : ${post.writer}</span>
+								<span style="text-align: start;">upload file by : ${post.writer}</span>
 							</div>
 							<span class="toflex">
 								<img id="${'img' + post.id}" class="img-star" onclick="fev(this,${post.id},post_container${post.id})" src="${fev}" alt="">
@@ -457,7 +536,7 @@
 		console.log(MAJOR_FOR_SEND)
 	}
 	function swal_remove(id) {
-		console.log('swall_id =>',id)
+		console.log('swall_id =>', id)
 		const swalWithBootstrapButtons = Swal.mixin({
 			customClass: {
 				confirmButton: 'btn btn-success',
@@ -476,16 +555,16 @@
 			reverseButtons: true
 		}).then((result) => {
 			if (result.isConfirmed) {
-				if(removeByuser(id)){
+				if (removeByuser(id)) {
 					swalWithBootstrapButtons.fire(
-					'Deleted!',
-					'Your file has been deleted.',
-					'success'
-				)
-				}else{
+						'Deleted!',
+						'Your file has been deleted.',
+						'success'
+					)
+				} else {
 					alert('บางอย่างทำงานผิดพลาด')
 				}
-				
+
 			} else if (
 				/* Read more about handling dismissals below */
 				result.dismiss === Swal.DismissReason.cancel

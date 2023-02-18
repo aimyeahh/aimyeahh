@@ -103,7 +103,8 @@
 .container-content>.content {
     display: flex;
     flex-direction: column;
-    align-items: start;
+    align-items: start !important;
+    align-self: self-start;
 }
 
 .upload-container {
@@ -202,4 +203,8 @@
 }
 .make-border{
     border: 1px solid yellow;
+}
+.downloadpage{
+    position: fixed;
+    z-index: 10;
 }

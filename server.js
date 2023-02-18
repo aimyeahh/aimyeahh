@@ -12,7 +12,7 @@ const multer = require('multer');
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, "./uploads");
-    }, 
+    },
     filename: function (req, file, cb) {
         cb(null, Date.now() + "-" + file.originalname);
     }
@@ -243,9 +243,7 @@ app.post('/api/login', (req, res) => {
                         if (error) responseErr()
                         else {
                             let mid = results[0].id
-                            // console.log(mid)
                             const token = jwt.sign({ data, username, mid }, secretKey);
-                            // const  decoded = jwt.verify(token, secretKey);
                             console.log('token', token)
                             responseSuccess('login', token)
                         }
@@ -311,7 +309,7 @@ app.post('/api/subject/insert', (req, res) => {
         console.log(err)
         res.status(400).json({
             msg: err,
-            err: err, 
+            err: err,
             code: -1
         })
     }
