@@ -208,3 +208,11 @@
     position: fixed;
     z-index: 10;
 }
+.borderimge1{
+    border: 2px solid blueviolet !important;
+    border-radius: 10px;
+}
+.borderimge1.close{
+    border: none !important;
+    border-radius: none !important;
+}

@@ -183,12 +183,11 @@
 
 
 		<div id="showoimgdownload" style="margin-top: 10px;display: flex;overflow: scroll;" class="swipe">
-			<img style="width: 22%; height: 12vh;" src="./img/1.jpg">
-			<img style="width: 22%; height: 12vh;" src="./img/1.jpg">
-			<img style="width: 22%; height: 12vh;" src="./img/1.jpg">
-			<img style="width: 22%; height: 12vh;" src="./img/1.jpg">
-			<img style="width: 22%; height: 12vh;" src="./img/1.jpg">
-
+			<img class="borderimge1 open" style="width: 22%; height: 12vh;" src="./img/1.jpg">
+			<img class="borderimge1" style="width: 22%; height: 12vh;" src="./img/1.jpg">
+			<img class="borderimge1" style="width: 22%; height: 12vh;" src="./img/1.jpg">
+			<img class="borderimge1" style="width: 22%; height: 12vh;" src="./img/1.jpg">
+			<img class="borderimge1" style="width: 22%; height: 12vh;" src="./img/1.jpg">
 		</div>
 	</div>
 
@@ -220,12 +219,14 @@
 		if (n < 1) { slideIndex = slides.length }
 		for (i = 0; i < slides.length; i++) {
 			slides[i].style.display = "none";
+			document.querySelector(`#showoimgdownload > img:nth-child(${i+1})`).classList.add('close')
 		}
 		for (i = 0; i < dots.length; i++) {
 			dots[i].className = dots[i].className.replace(" active", "");
 		}
-		let src = document.querySelector(`#showoimgdownload2 > div:nth-child(${slideIndex}) > img`).src
-		For_Download_Image = src
+		document.querySelector(`#showoimgdownload > img:nth-child(${slideIndex})`).classList.remove('close')
+		let image = document.querySelector(`#showoimgdownload2 > div:nth-child(${slideIndex}) > img`)
+		For_Download_Image = image.src
 		slides[slideIndex - 1].style.display = "block";
 	}
 	// ------------------------------------------------------------------------------------------
@@ -422,7 +423,7 @@
 		let html2 = ''//main image
 		let allnum = imgToArr.length
 		imgToArr.forEach(e => {
-			html += `<img style="width: 22%; height: 12vh;" src="./${e}">`
+			html += `<img class='borderimge1' style="width: 22%; height: 12vh;" src="./${e}">`
 		});
 		imgToArr.forEach((e, index) => {
 			html2 += `
@@ -519,6 +520,12 @@
 			showallpost.innerHTML = html
 		} else {
 			render_post()
+		}
+		let check_open_upload  = []
+		showallpost.classList.forEach(e => check_open_upload.push(e))
+		if(!check_open_upload.includes('open')){
+			console.log('xxx')
+			swapupload()
 		}
 	}
 	let MAJOR_FOR_SEND = []
