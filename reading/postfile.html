@@ -148,7 +148,7 @@
 	</div>
 	<div id="downloadpage" style="background-color: white;display: none;width: 100%; " class="downloadpage">
 		<div style="display: flex; height: 5vh; flex-direction: row; align-items: center;">
-			<div style="width: 50%; padding-left: 10px;" onclick="downloadpage.style.display = 'none'">
+			<div style="width: 50%; padding-left: 10px;" onclick="downloadpage.style.display = 'none';Download_all_path = [];">
 				<span>close</span>
 			</div>
 			<div onclick="downloadImage(For_Download_Image)" style="width: 50%; text-align: end;padding-right: 10px;">
@@ -197,6 +197,7 @@
 <script src="main.js"></script>
 
 <script>
+	let Download_all_path = []
 	// script dowload.js
 	// ---------------------------------------------------------------------------
 	let For_Download_Image = ''
@@ -210,7 +211,6 @@
 	function currentSlide(n) {
 		showSlides(slideIndex = n);
 	}
-
 	function showSlides(n) {
 		let i;
 		let slides = document.getElementsByClassName("mySlides");
@@ -219,7 +219,7 @@
 		if (n < 1) { slideIndex = slides.length }
 		for (i = 0; i < slides.length; i++) {
 			slides[i].style.display = "none";
-			document.querySelector(`#showoimgdownload > img:nth-child(${i+1})`).classList.add('close')
+			document.querySelector(`#showoimgdownload > img:nth-child(${i + 1})`).classList.add('close')
 		}
 		for (i = 0; i < dots.length; i++) {
 			dots[i].className = dots[i].className.replace(" active", "");
@@ -426,6 +426,7 @@
 			html += `<img class='borderimge1' style="width: 22%; height: 12vh;" src="./${e}">`
 		});
 		imgToArr.forEach((e, index) => {
+			Download_all_path.push(e)
 			html2 += `
 			<div class="mySlides fade">
 				<div class="numbertext">${index + 1} / ${allnum}</div>
@@ -478,11 +479,16 @@
 		}
 
 	}
+	// let Download_all_path = []
 	function downloadImage(url) {
-		var link = document.createElement("a");
-		link.download = url.slice(-20);
-		link.href = url;
-		link.click();
+		Download_all_path.forEach(e => {
+			url = e
+			var link = document.createElement("a");
+			link.download = url.slice(-20);
+			link.href = url;
+			link.click();
+		})
+		Download_all_path = []
 	}
 	let switch_fev = false
 	async function fillter_Fev() {
@@ -521,9 +527,9 @@
 		} else {
 			render_post()
 		}
-		let check_open_upload  = []
+		let check_open_upload = []
 		showallpost.classList.forEach(e => check_open_upload.push(e))
-		if(!check_open_upload.includes('open')){
+		if (!check_open_upload.includes('open')) {
 			console.log('xxx')
 			swapupload()
 		}
