@@ -84,4 +84,7 @@ img {
 	padding: 16px;
 	margin-bottom: 30px;
   }
+  .toflex{
+	display: flex;
+  }
   

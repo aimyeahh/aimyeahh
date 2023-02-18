@@ -276,6 +276,7 @@
 		let html = ''
 		let search_text = e.value
 		data.map(post => {
+			let user_del = localStorage.getItem('user') === post.writer  ? '<img style="width: 15px;margin-left:5px" class="" onclick="removePostByUser()" src="./img/del.svg" alt="">' : ''
 			if (post.hashtag.includes(search_text)) {
 				let srcimg1 = post.path.split(',')[0]
 				let fev = fillter_fev.includes(post.id) ? './img/fevfullstar.svg' : './img/starnonfull.svg'
@@ -288,8 +289,9 @@
 								<span>${post.title}</span>
 								<span>upload file by : ${post.writer}</span>
 							</div>
-							<span>
+							<span class="toflex">
 								<img id="${'img' + post.id}" class="img-star" onclick="fev(this,${post.id})" src="${fev}" alt="">
+								${user_del}
 							</span>
 						</div>
 					</div>`
@@ -331,6 +333,7 @@
 			}).map(d => d.ud_id)
 			GLOBAL_FEV_DATA = fillter_fev
 			data.map(post => {
+				let user_del = localStorage.getItem('user') === post.writer  ? '<img style="width: 15px;margin-left:5px" class="" onclick="removePostByUser()" src="./img/del.svg" alt="">' : ''
 				let srcimg1 = post.path.split(',')[0]
 				let fev = fillter_fev.includes(post.id) ? './img/fevfullstar.svg' : './img/starnonfull.svg'
 				html += `<div class="card-container">
@@ -342,8 +345,9 @@
 								<span>${post.title}</span>
 								<span>upload file by : ${post.writer}</span>
 							</div>
-							<span>
+							<span class="toflex">
 								<img id="${'img' + post.id}" class="img-star" onclick="fev(this,${post.id})" src="${fev}" alt="">
+								${user_del}
 							</span>
 						</div>
 					</div>`
@@ -354,6 +358,9 @@
 			console.log(err)
 			alert('something err')
 		}
+	}
+	function removePostByUser(){
+		
 	}
 	function downloadFile(url, test) {
 		fetch(url, { method: 'get', mode: 'no-cors', referrerPolicy: 'no-referrer' })
@@ -378,6 +385,7 @@
 		let data = GLOBAL_POST_DATA
 		if (switch_fev) {
 			data.map(post => {
+				let user_del = localStorage.getItem('user') === post.writer  ? '<img style="width: 15px;margin-left:5px" class="" onclick="removePostByUser()" src="./img/del.svg" alt="">' : ''
 				let srcimg1 = post.path.split(',')[0]
 				let fev = fillter_fev.includes(post.id) ? './img/fevfullstar.svg' : './img/starnonfull.svg'
 				if (fillter_fev.includes(post.id)) {
@@ -390,8 +398,9 @@
 								<span>${post.title}</span>
 								<span>upload file by : ${post.writer}</span>
 							</div>
-							<span>
+							<span class="toflex">
 								<img id="${'img' + post.id}" class="img-star" onclick="fev(this,${post.id},post_container${post.id})" src="${fev}" alt="">
+								${user_del}
 							</span>
 						</div>
 					</div>`
