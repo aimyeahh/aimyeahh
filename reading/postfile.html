@@ -41,7 +41,7 @@
 	<div class="main-body">
 		<div class="body">
 			<div class="search">
-				<input type="text" name="" id="">
+				<input type="text" onclick="render_post()" onkeyup="filtersSearch(this)" name="" id="searchpost">
 				<img class="icon-search" src="./img/iconsearch.svg"></img>
 				<img onclick="swapupload()" style="object-fit: contain; " src="./img/upload.png" alt="upload">
 				<img src="./img/fav.png" onclick="fillter_Fev()" class="imgfev" alt="">
@@ -136,16 +136,16 @@
 					<div class="b1">
 						<span class="fn1-a">แฮชแท็ก ( เลือกอย่างน้อย1 )</span>
 						<div class="grid-img-2">
-							<div>#ไทย</div>
-							<div>#อังกฤษ</div>
-							<div>#คณิต</div>
-							<div>#</div>
-							<div>#</div>
-							<div>#</div>
-							<div>#</div>
-							<div>#</div>
-							<div>#</div>
-							<div>#</div>
+							<div onclick="makeSelectBorder(this)">#ไทย</div>
+							<div onclick="makeSelectBorder(this)">#อังกฤษ</div>
+							<div onclick="makeSelectBorder(this)">#คณิต</div>
+							<div onclick="makeSelectBorder(this)">#a</div>
+							<div onclick="makeSelectBorder(this)">#b</div>
+							<div onclick="makeSelectBorder(this)">#c</div>
+							<div onclick="makeSelectBorder(this)">#d</div>
+							<div onclick="makeSelectBorder(this)">#e</div>
+							<div onclick="makeSelectBorder(this)">#f</div>
+							<div onclick="makeSelectBorder(this)">#g</div>
 						</div>
 					</div>
 					<div style="margin-top: 50px; display: flex;justify-content: center;">
@@ -194,10 +194,9 @@
 			upload.classList.remove('open')
 		}
 	}
-	async function fev(id, obj,containner_id) {
+	async function fev(id, obj, containner_id) {
 		let star = document.getElementById(id.id).src
 		star.includes('fevfullstar') ? document.getElementById(id.id).src = './img/starnonfull.svg' : document.getElementById(id.id).src = './img/fevfullstar.svg'
-		// console.log(star)
 		let headersList = {
 			"Accept": "*/*", "Content-Type": "application/json"
 		}
@@ -220,11 +219,9 @@
 		} else {
 			fetchgetFev('on')
 		}
-		// render_post()
 	}
 
 	function preview() {
-		// console.log('xxxx',event.target.files)
 		let obj_length = event.target.files.length
 		let input = event.target
 		let html = upload_imgs.innerHTML
@@ -244,11 +241,10 @@
 
 	const button = document.querySelector('#uploadButton');
 	button.addEventListener('click', (event) => {
-
 		event.preventDefault();
 		formData.append('user', localStorage.getItem('user'));
 		formData.append('head', upload_getvalue.value);
-		formData.append('hashtages', ['#ไทย', '#eng']);
+		formData.append('hashtages', MAJOR_FOR_SEND);
 		fetch('http://localhost:3000/api/upload', {
 			method: 'POST',
 			body: formData
@@ -257,52 +253,33 @@
 			.then(data => {
 				try {
 					if (data.msg == 'success') {
+						alert('uploads file สำเร็จ')
+						swapupload()
+						render_post()
 					}
 				} catch (error) {
+					alert('มีบางอย่างทำการผิดพลาด')
+					swapupload()
 					console.log(data);
+					render_post()
 				}
 			})
-			.catch(error => console.log(error));
+			.catch(error => {
+				console.log(error)
+				swapupload()
+				render_post()
+			});
 	});
-	render_post()
-	let GLOBAL_POST_DATA = ''
-	let GLOBAL_FEV_DATA = ''
-	async function render_post() {
-		let headersList = {
-			"Accept": "*/*",
-			"Content-Type": "application/json"
-		}
-		let response = await fetch("http://localhost:3000/api/show/post", {
-			method: "GET",
-			headers: headersList
-		});
-
-		let data = await response.json();
-		console.log(data);
-		data = data.data
-		GLOBAL_POST_DATA = data
+	function filtersSearch(e) {
+		let data = GLOBAL_POST_DATA
+		let fillter_fev = GLOBAL_FEV_DATA
 		let html = ''
-		let response_fev = await fetch("http://localhost:3000/api/show/fev", {
-			method: "POST",
-			body: JSON.stringify({
-				token: localStorage.getItem('token')
-			}),
-			headers: headersList
-		});
-
-		let data_fev = await response_fev.json();
-		console.log(data_fev);
-		let fillter_fev = data_fev.data
-		fillter_fev = fillter_fev.filter(data => {
-			return data.status == 'on'
-		}).map(d => d.ud_id)
-		GLOBAL_FEV_DATA = fillter_fev
-
+		let search_text = e.value
 		data.map(post => {
-
-			let srcimg1 = post.path.split(',')[0]
-			let fev = fillter_fev.includes(post.id) ? './img/fevfullstar.svg' : './img/starnonfull.svg'
-			html += `<div class="card-container">
+			if (post.hashtag.includes(search_text)) {
+				let srcimg1 = post.path.split(',')[0]
+				let fev = fillter_fev.includes(post.id) ? './img/fevfullstar.svg' : './img/starnonfull.svg'
+				html += `<div class="card-container">
 						<div class="box">
 							<img class="img-inbox" src="http://localhost:3000/${srcimg1}" alt="">
 						</div>
@@ -316,8 +293,67 @@
 							</span>
 						</div>
 					</div>`
+			}
 		})
 		showallpost.innerHTML = html
+	}
+	render_post()
+	let GLOBAL_POST_DATA = ''
+	let GLOBAL_FEV_DATA = ''
+	async function render_post() {
+		try {
+			let headersList = {
+				"Accept": "*/*",
+				"Content-Type": "application/json"
+			}
+			let response = await fetch("http://localhost:3000/api/show/post", {
+				method: "GET",
+				headers: headersList
+			});
+
+			let data = await response.json();
+			console.log(data);
+			data = data.data
+			GLOBAL_POST_DATA = data
+			let html = ''
+			let response_fev = await fetch("http://localhost:3000/api/show/fev", {
+				method: "POST",
+				body: JSON.stringify({
+					token: localStorage.getItem('token')
+				}),
+				headers: headersList
+			});
+
+			let data_fev = await response_fev.json();
+			let fillter_fev = data_fev.data
+			fillter_fev = fillter_fev.filter(data => {
+				return data.status == 'on'
+			}).map(d => d.ud_id)
+			GLOBAL_FEV_DATA = fillter_fev
+			data.map(post => {
+				let srcimg1 = post.path.split(',')[0]
+				let fev = fillter_fev.includes(post.id) ? './img/fevfullstar.svg' : './img/starnonfull.svg'
+				html += `<div class="card-container">
+						<div class="box">
+							<img class="img-inbox" src="http://localhost:3000/${srcimg1}" alt="">
+						</div>
+						<div class="container-content">
+							<div class="content">
+								<span>${post.title}</span>
+								<span>upload file by : ${post.writer}</span>
+							</div>
+							<span>
+								<img id="${'img' + post.id}" class="img-star" onclick="fev(this,${post.id})" src="${fev}" alt="">
+							</span>
+						</div>
+					</div>`
+			})
+			showallpost.innerHTML = html
+		}
+		catch (err) {
+			console.log(err)
+			alert('something err')
+		}
 	}
 	function downloadFile(url, test) {
 		fetch(url, { method: 'get', mode: 'no-cors', referrerPolicy: 'no-referrer' })
@@ -335,13 +371,12 @@
 	let switch_fev = false
 	async function fillter_Fev() {
 		await render_post()
-		console.log('switch',switch_fev)
 		switch_fev = !switch_fev
 		let html = ''
 		let fillter_fev = ''
 		fillter_fev = GLOBAL_FEV_DATA
 		let data = GLOBAL_POST_DATA
-			if (switch_fev) {
+		if (switch_fev) {
 			data.map(post => {
 				let srcimg1 = post.path.split(',')[0]
 				let fev = fillter_fev.includes(post.id) ? './img/fevfullstar.svg' : './img/starnonfull.svg'
@@ -368,8 +403,19 @@
 		} else {
 			render_post()
 		}
-		
-
 	}
-
+	let MAJOR_FOR_SEND = []
+	function makeSelectBorder(e) {
+		let textContent = e.textContent
+		if (MAJOR_FOR_SEND.includes(textContent)) {
+			var index = MAJOR_FOR_SEND.indexOf(textContent);
+			if (index !== -1) {
+				MAJOR_FOR_SEND.splice(index, 1);
+			}
+			console.log(MAJOR_FOR_SEND)
+		} else {
+			MAJOR_FOR_SEND.push(textContent)
+		}
+		console.log(MAJOR_FOR_SEND)
+	}
 </script>
