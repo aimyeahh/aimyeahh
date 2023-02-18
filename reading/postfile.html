@@ -11,7 +11,7 @@
 		href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@500&family=Rubik:wght@500&display=swap"
 		rel="stylesheet">
 	<title>POST file</title>
-
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<link rel="stylesheet" href="setting.css" />
 	<link rel="stylesheet" href="./css/postfile.css">
 </head>
@@ -276,7 +276,8 @@
 		let html = ''
 		let search_text = e.value
 		data.map(post => {
-			let user_del = localStorage.getItem('user') === post.writer  ? '<img style="width: 15px;margin-left:5px" class="" onclick="removePostByUser()" src="./img/del.svg" alt="">' : ''
+			console.log(post.id)
+			let user_del = localStorage.getItem('user') === post.writer ? `<img style="width: 15px;margin-left:5px" class="" onclick="swal_remove(${post.id})" src="./img/del.svg" alt="">` : ''
 			if (post.hashtag.includes(search_text)) {
 				let srcimg1 = post.path.split(',')[0]
 				let fev = fillter_fev.includes(post.id) ? './img/fevfullstar.svg' : './img/starnonfull.svg'
@@ -333,7 +334,7 @@
 			}).map(d => d.ud_id)
 			GLOBAL_FEV_DATA = fillter_fev
 			data.map(post => {
-				let user_del = localStorage.getItem('user') === post.writer  ? '<img style="width: 15px;margin-left:5px" class="" onclick="removePostByUser()" src="./img/del.svg" alt="">' : ''
+				let user_del = localStorage.getItem('user') === post.writer ? `<img style="width: 15px;margin-left:5px" class="" onclick="swal_remove(${post.id})" src="./img/del.svg" alt="">` : ''
 				let srcimg1 = post.path.split(',')[0]
 				let fev = fillter_fev.includes(post.id) ? './img/fevfullstar.svg' : './img/starnonfull.svg'
 				html += `<div class="card-container">
@@ -359,8 +360,36 @@
 			alert('something err')
 		}
 	}
-	function removePostByUser(){
-		
+	async function removeByuser(id) {
+		let headersList = {
+			"Accept": "*/*",
+			"Content-Type": "application/json"
+		}
+		try {
+			let response = await fetch("http://localhost:3000/api/del/post", {
+				method: "POST",
+				body: JSON.stringify({
+					token: localStorage.getItem('token'),
+					'id' : id
+				}),
+				headers: headersList
+			});
+
+			let data = await response.json();
+			console.log('xxxxxxxxxx',data)
+			if(data.msg === 'success'){
+				console.log('yyy')
+				setTimeout(()=>{
+					render_post()
+				},1000)
+				return true
+			}else{
+				return false
+			}
+		} catch (error) {
+			return false
+		}
+
 	}
 	function downloadFile(url, test) {
 		fetch(url, { method: 'get', mode: 'no-cors', referrerPolicy: 'no-referrer' })
@@ -385,7 +414,7 @@
 		let data = GLOBAL_POST_DATA
 		if (switch_fev) {
 			data.map(post => {
-				let user_del = localStorage.getItem('user') === post.writer  ? '<img style="width: 15px;margin-left:5px" class="" onclick="removePostByUser()" src="./img/del.svg" alt="">' : ''
+				let user_del = localStorage.getItem('user') === post.writer ? `<img style="width: 15px;margin-left:5px" class="" onclick="swal_remove(${post.id})" src="./img/del.svg" alt="">` : ''
 				let srcimg1 = post.path.split(',')[0]
 				let fev = fillter_fev.includes(post.id) ? './img/fevfullstar.svg' : './img/starnonfull.svg'
 				if (fillter_fev.includes(post.id)) {
@@ -426,5 +455,48 @@
 			MAJOR_FOR_SEND.push(textContent)
 		}
 		console.log(MAJOR_FOR_SEND)
+	}
+	function swal_remove(id) {
+		console.log('swall_id =>',id)
+		const swalWithBootstrapButtons = Swal.mixin({
+			customClass: {
+				confirmButton: 'btn btn-success',
+				cancelButton: 'btn btn-danger'
+			},
+			buttonsStyling: false
+		})
+
+		swalWithBootstrapButtons.fire({
+			title: 'Are you sure?',
+			text: "You won't be able to revert this!",
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonText: 'Yes, delete it!',
+			cancelButtonText: 'No, cancel!',
+			reverseButtons: true
+		}).then((result) => {
+			if (result.isConfirmed) {
+				if(removeByuser(id)){
+					swalWithBootstrapButtons.fire(
+					'Deleted!',
+					'Your file has been deleted.',
+					'success'
+				)
+				}else{
+					alert('บางอย่างทำงานผิดพลาด')
+				}
+				
+			} else if (
+				/* Read more about handling dismissals below */
+				result.dismiss === Swal.DismissReason.cancel
+			) {
+				swalWithBootstrapButtons.fire(
+					'Cancelled',
+					'Your imaginary file is safe :)',
+					'error'
+				)
+			}
+		})
+
 	}
 </script>

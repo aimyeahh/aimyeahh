@@ -458,8 +458,14 @@ app.post('/api/del/post', (req, res) => {
     try {
         let token = req.body.token
         let id_remove = req.body.id
-        let obj = decodeToken(token)
-        console.log(obj)
+        decodeToken(token)
+        con.query(`UPDATE uploads_data SET status = 'remove' where id=? `, [id_remove], (err, results) => {
+            if (err) res.status(400).json({ msg: 'query data base err' })
+            if (results) {
+                console.log(results)
+                res.status(200).json({ msg: 'success', code: 0 })
+            }
+        })
     } catch (err) {
         res.status(400).json({ msg: 'something err' })
     }
