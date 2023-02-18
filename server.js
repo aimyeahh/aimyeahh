@@ -12,7 +12,7 @@ const multer = require('multer');
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, "./uploads");
-    },
+    }, 
     filename: function (req, file, cb) {
         cb(null, Date.now() + "-" + file.originalname);
     }
@@ -311,7 +311,7 @@ app.post('/api/subject/insert', (req, res) => {
         console.log(err)
         res.status(400).json({
             msg: err,
-            err: err,
+            err: err, 
             code: -1
         })
     }
