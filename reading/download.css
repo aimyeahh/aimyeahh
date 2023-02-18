@@ -53,9 +53,13 @@ img {vertical-align: middle;}
 .numbertext {
   color: #f2f2f2;
   font-size: 12px;
-  padding: 8px 12px;
+  padding: 4px 8px 4px 8px;
   position: absolute;
   top: 0;
+  border-radius: 10px;
+  margin-top: 13px;
+  margin-left: 10px;
+  background-color: #1e1e1e;
 }
 
 .active, .dot:hover {
