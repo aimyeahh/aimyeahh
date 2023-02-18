@@ -32,7 +32,7 @@ Timer = ()=>{
 
         let sound = new Audio('sound.mp3');
         sound.play();
-
+        clearInterval(interval);
         disp.innerText = "Time Over!!!";
         
     }
