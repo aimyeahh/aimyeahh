@@ -45,7 +45,7 @@
 				<input type="text" onclick="render_post()" onkeyup="filtersSearch(this)" name="" id="searchpost">
 				<img class="icon-search" src="./img/iconsearch.svg"></img>
 				<img id="swap111" onclick="swapupload(this)" style="object-fit: contain; " src="./img/uploadaim2.png" alt="upload">
-				<img src="./img/fev222.png" onclick="fillter_Fev(this)" class="imgfev" alt="">
+				<img id="fev_image" src="./img/fev222.png" onclick="fillter_Fev(this)" class="imgfev" alt="">
 			</div>
 			<div style="overflow: scroll;height: 84vh;">
 				<!-- grid layout  -->
@@ -232,10 +232,13 @@
 	// ------------------------------------------------------------------------------------------
 
 	let formData = ''
-	function swapupload(e) {
+	async function swapupload(e) {
 		let swap = document.querySelector('.grid-container').getAttribute('class')
 		let post = document.querySelector('.grid-container')
 		let upload = document.querySelector('.upload-container')
+		if (switch_fev){
+			await fillter_Fev(fev_image)
+		}
 		if (swap.includes('open')) {
 			post.classList.remove('open')
 			upload.classList.add('open')
@@ -575,10 +578,12 @@
 			var index = MAJOR_FOR_SEND.indexOf(textContent);
 			if (index !== -1) {
 				MAJOR_FOR_SEND.splice(index, 1);
+				e.classList.remove('make-border')
 			}
 			console.log(MAJOR_FOR_SEND)
 		} else {
 			MAJOR_FOR_SEND.push(textContent)
+			e.classList.add('make-border')
 		}
 		console.log(MAJOR_FOR_SEND)
 	}
