@@ -524,17 +524,19 @@
 	let switch_fev = false
 	async function fillter_Fev(e) {
 		await render_post()
-		switch_fev = !switch_fev
-		switch_fev ? e.src = './img/fev111.png': e.src = './img/fev222.png'
 		let checkupload = document.querySelector('.upload-container').className.includes('open')
 		if (checkupload){
-			swapupload(swap111)
+			await swapupload(swap111)
+			switch_fev = false
 		}
+		switch_fev = !switch_fev
+		switch_fev ? e.src = './img/fev111.png': e.src = './img/fev222.png'
 
 		let html = ''
 		let fillter_fev = ''
 		fillter_fev = GLOBAL_FEV_DATA
 		let data = GLOBAL_POST_DATA
+		console.log('switch_fev',switch_fev)
 		if (switch_fev) {
 			data.map(post => {
 				let user_del = localStorage.getItem('user') === post.writer ? `<img style="width: 15px;margin-left:5px" class="" onclick="swal_remove(${post.id})" src="./img/del.svg" alt="">` : ''
