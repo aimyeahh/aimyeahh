@@ -44,8 +44,8 @@
 			<div class="search">
 				<input type="text" onclick="render_post()" onkeyup="filtersSearch(this)" name="" id="searchpost">
 				<img class="icon-search" src="./img/iconsearch.svg"></img>
-				<img onclick="swapupload()" style="object-fit: contain; " src="./img/upload.png" alt="upload">
-				<img src="./img/fav.png" onclick="fillter_Fev()" class="imgfev" alt="">
+				<img id="swap111" onclick="swapupload(this)" style="object-fit: contain; " src="./img/uploadaim2.png" alt="upload">
+				<img src="./img/fev222.png" onclick="fillter_Fev(this)" class="imgfev" alt="">
 			</div>
 			<div style="overflow: scroll;height: 84vh;">
 				<!-- grid layout  -->
@@ -93,8 +93,8 @@
 						<input style="margin-top: 5px;" type="file" onchange="preview()" id="fileInput" multiple>
 					</div>
 					<div id="upload_imgs" class="b1 more grid-img-show close"></div>
-					<div id="upload_mock" class="b1 more grid-img">
-						<div>
+					<div id="upload_mock" class="">
+						<!-- <div>
 							<img src="" alt="">
 						</div>
 						<div>
@@ -108,7 +108,7 @@
 						</div>
 						<div>
 							<img src="" alt="">
-						</div>
+						</div> -->
 					</div>
 					<div class="b1">
 						<span class="fn1-a">แฮชแท็ก ( เลือกอย่างน้อย1 )</span>
@@ -232,7 +232,7 @@
 	// ------------------------------------------------------------------------------------------
 
 	let formData = ''
-	function swapupload() {
+	function swapupload(e) {
 		let swap = document.querySelector('.grid-container').getAttribute('class')
 		let post = document.querySelector('.grid-container')
 		let upload = document.querySelector('.upload-container')
@@ -246,7 +246,9 @@
 			upload_mock.classList.remove('close')
 			upload_imgs.classList.add('close')
 			upload_getvalue.value = ''
+			e.src = './img/uploadaim.png'
 		} else {
+			e.src = './img/uploadaim2.png'
 			post.classList.add('open')
 			upload.classList.remove('open')
 		}
@@ -309,21 +311,28 @@
 			.then(response => response.json())
 			.then(data => {
 				try {
+					console.log(1)
 					if (data.msg == 'success') {
 						alert('uploads file สำเร็จ')
-						swapupload()
+						swapupload(swap111)
+						render_post()
+					}else{
+						alert('uploads file ไม่สำเร็จกรุณาลองใหม่')
+						swapupload(swap111)
 						render_post()
 					}
 				} catch (error) {
+					console.log(2)
 					alert('มีบางอย่างทำการผิดพลาด')
-					swapupload()
+					swapupload(swap111)
 					console.log(data);
 					render_post()
 				}
 			})
 			.catch(error => {
+				console.log(3)
 				console.log(error)
-				swapupload()
+				swapupload(swap111)
 				render_post()
 			});
 	});
@@ -510,9 +519,15 @@
 		Download_all_path = []
 	}
 	let switch_fev = false
-	async function fillter_Fev() {
+	async function fillter_Fev(e) {
 		await render_post()
 		switch_fev = !switch_fev
+		switch_fev ? e.src = './img/fev111.png': e.src = './img/fev222.png'
+		let checkupload = document.querySelector('.upload-container').className.includes('open')
+		if (checkupload){
+			swapupload(swap111)
+		}
+
 		let html = ''
 		let fillter_fev = ''
 		fillter_fev = GLOBAL_FEV_DATA
@@ -550,7 +565,7 @@
 		showallpost.classList.forEach(e => check_open_upload.push(e))
 		if (!check_open_upload.includes('open')) {
 			console.log('xxx')
-			swapupload()
+			swapupload(swap111)
 		}
 	}
 	let MAJOR_FOR_SEND = []
