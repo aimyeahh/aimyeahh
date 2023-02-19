@@ -258,7 +258,7 @@
 			"Accept": "*/*", "Content-Type": "application/json"
 		}
 		const fetchgetFev = async (type) => {
-			console.log('obj', obj)
+			// console.log('obj', obj)
 			let response = await fetch('http://localhost:3000/api/fev/' + type, {
 				headers: headersList,
 				method: "POST",
@@ -284,7 +284,7 @@
 		let html = upload_imgs.innerHTML
 		for (let i = 0; i < obj_length; i++) {
 			formData.append('file', input.files[i]);
-			console.log('formData', formData)
+			// console.log('formData', formData)
 			let src = URL.createObjectURL(event.target.files[i]);
 			html += `<div>
 							<img class='img-width' src="${src}" alt="">
@@ -416,14 +416,33 @@
 			alert('something err')
 		}
 	}
+	function clickImage(n){
+		console.log('check click image ',n)
+		let check_between = ITEM_AFTER - n
+		console.log('check check_between ',check_between)
+		if (ITEM_AFTER > n){
+			console.log('back')
+			plusSlides(check_between * -1)
+		}else if(ITEM_AFTER < n){
+			console.log('forward')
+			plusSlides(Math.abs(check_between))
+		}
+		ITEM_AFTER = n
+		
+		// for (let index = 0; index < check_between; index++) {
+		// 	const element = array[index];
+			
+		// }
+	}
+	let ITEM_AFTER = 1
 	function showdownload(obj) {
-		console.log(obj)
+		// console.log(obj)
 		let imgToArr = obj.path.split(',')
 		let html = '' //image bar
 		let html2 = ''//main image
 		let allnum = imgToArr.length
-		imgToArr.forEach(e => {
-			html += `<img class='borderimge1' style="width: 22%; height: 12vh;" src="./${e}">`
+		imgToArr.forEach((e,index) => {
+			html += `<img onclick="clickImage(${index+1})" class='borderimge1' style="width: 22%; height: 12vh;" src="./${e}">`
 		});
 		imgToArr.forEach((e, index) => {
 			Download_all_path.push(e)
@@ -437,7 +456,7 @@
 		});
 		html2 += `<a class="prev" onclick="plusSlides(-1)">❮</a>
 			<a class="next" onclick="plusSlides(1)">❯</a>`
-		console.log(imgToArr)
+		// console.log(imgToArr)
 		downloadpage.style.display = ''//open
 		showoimgdownload.innerHTML = html
 		showoimgdownload2.innerHTML = html2
