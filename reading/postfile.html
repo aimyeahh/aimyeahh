@@ -276,7 +276,9 @@
 			return data
 		}
 		if (star.includes('fevfullstar')) {
-			containner_id.style.display = 'none'
+			if(containner_id){
+				containner_id.style.display = 'none'
+			}
 			fetchgetFev('off')
 		} else {
 			fetchgetFev('on')
