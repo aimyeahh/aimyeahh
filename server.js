@@ -234,6 +234,7 @@ app.post('/api/login', (req, res) => {
                     console.log(6)
                     responseErr()
                 } else if (results[0]) {
+                    console.log(7)
                     con.query(`SELECT member.id, member.username ,todolist.text, data.subject, data.ref1,data.ref2,data.ref3 FROM member
                     INNER JOIN todolist 
                     ON member.username = todolist.username
@@ -247,6 +248,7 @@ app.post('/api/login', (req, res) => {
                             console.log('token', token)
                             responseSuccess('login', token)
                         }
+                        console.log(error)
                     })
                 } else {
                     console.log(results)
