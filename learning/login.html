@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>Login</div>
+    <div style="display: flex; flex-direction: column; width: 20%;">
+        <label>Username : </label><input id="username">
+        <label>Password : </label><input id="password">
+        <button onclick="login()">Login</button>
+    </div>
+</body>
+
+</html>
+<script>
+     function login() {
+        const url = "http://localhost:3000/login2";
+        const username = document.querySelector("#username").value;
+        const password = document.querySelector("#password").value;
+        const data = { username: username, password: password };
+        fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-type": "application/json",
+        },
+        body: JSON.stringify(data),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data)
+            localStorage.setItem("token",data.token)
+            window.location.href = "./home.html";
+        })
+        .catch((error) => console.log(error));
+}
+
+</script>

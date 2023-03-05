@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <h2>Home</h2>
+    </div>
+</body>
+</html>
+<script>
+    checktoken()
+    function checktoken () {
+        const url = "http://localhost:3000/checktoken";
+        const data = { token: localStorage.getItem('token')};
+        fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-type": "application/json",
+        },
+        body: JSON.stringify(data),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data.msg)
+            if(data.msg == 'good'){
+                console.log('success')
+            }
+            else{
+                window.location.href = "./login.html";
+            }
+        })
+        .catch((error) => console.log(error));
+}
+</script>

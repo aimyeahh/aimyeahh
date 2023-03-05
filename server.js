@@ -531,3 +531,65 @@ app.get('/mysql/:token', (req, res) => {
     }
 
 })
+
+app.post('/login2' , (req, res) =>{
+    try{
+        let username = req.body.username
+        let password = req.body.password
+        if(username && password){
+            password = MD5(password)
+            con.query(`SELECT * FROM member WHERE username  = ? and password = ?;`, [username,password],function (error, results, fields) {
+                if (error) throw error;
+                if(results[0]){
+                    var token = jwt2.sign({ data: [0, 1, 2, 3, 4] }, secretKey2);
+                    res.status(200).json({
+                        token: token
+                    })
+                }
+                else{
+                    res.status(400).json({
+                        data: 'err'
+                    })
+                }
+               
+            });
+        }else{
+            res.status(400).json({
+                data: 'err'
+            })
+        }
+
+    } catch (err) {
+        res.status(400).json({
+            data: "errr"
+        })
+    }
+})
+
+app.post('/checktoken', (req, res) => {
+    try {
+        let gettoken = req.body.token
+        let decoded2 = jwt2.verify(gettoken, secretKey2);
+        if(decoded2){
+            res.status(200).json({
+                msg: 'good'
+            })
+            
+        }else{
+            res.status(200).json({
+                msg: 'bad'
+            })
+        }
+        
+    } catch (err) {
+        res.status(400).json({
+            data: "errr"
+        })
+    }
+
+})
+
+
+
+
+
