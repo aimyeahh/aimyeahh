@@ -471,3 +471,63 @@ app.post('/api/del/post', (req, res) => {
     }
 })
 
+
+
+
+
+
+//learning 
+
+//jwt
+var jwt2 = require('jsonwebtoken');//npm i jsonwebtoken https://www.npmjs.com/package/jsonwebtoken
+let secretKey2 = 'aim'
+// var token = jwt2.sign({ data: [0, 1, 2, 3, 4] }, secretKey2);
+// console.log(token)
+// var decoded2 = jwt2.verify(token, secretKey2);
+// console.log(decoded2.data[0])
+
+app.get('/gettoken', (req, res) => {
+    try {
+        var token = jwt2.sign({ data: [0, 1, 2, 3, 4] }, secretKey2);
+        console.log(token)
+        var decoded2 = jwt2.verify(token, secretKey2);
+        console.log(decoded2.data[0])
+        res.status(200).json({
+            token : token
+        })
+        
+    } catch (err) {
+        res.status(400).json({
+            data: "errr"
+        })
+    }
+
+})
+
+app.get('/mysql/:token', (req, res) => {
+    try {
+        let gettoken = req.params.token
+        let decoded2 = jwt2.verify(gettoken, secretKey2);
+        if(decoded2){
+            con.query('select * from data ', function (error, results, fields) {
+                if (error) throw error;
+                if(results[0]){
+                    
+                }
+                res.status(200).json({
+                    data: results
+                })
+            });
+        }else{
+            res.status(400).json({
+                data: 'err'
+            })
+        }
+        
+    } catch (err) {
+        res.status(400).json({
+            data: "errr"
+        })
+    }
+
+})
