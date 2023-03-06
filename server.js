@@ -209,7 +209,6 @@ app.post('/api/login', (req, res) => {
     console.log('login API')
     let username = req.body.username
     let password = req.body.password
-    console.log(1)
     const responseErr = (msg1) => {
         res.status(400).json({
             msg: msg1 ? msg1 : 'something wrong',
@@ -224,17 +223,13 @@ app.post('/api/login', (req, res) => {
         })
     }
     try {
-        console.log(2)
         username = username
         password = MD5(password)
         if (username && password && (password.length >= 8)) {
-            console.log(3)
             con.query('select * from member where username =  ? && password = ?', [username, password], function (error, results, fields) {
                 if (error) {
-                    console.log(6)
                     responseErr()
                 } else if (results[0]) {
-                    console.log(7)
                     con.query(`SELECT member.id, member.username ,todolist.text, data.subject, data.ref1,data.ref2,data.ref3 FROM member
                     INNER JOIN todolist 
                     ON member.username = todolist.username
@@ -245,18 +240,17 @@ app.post('/api/login', (req, res) => {
                         else {
                             let mid = results[0].id
                             const token = jwt.sign({ data, username, mid }, secretKey);
-                            console.log('token', token)
+                            // console.log('token', token)
                             responseSuccess('login', token)
                         }
-                        console.log(error)
+                        // console.log(error)
                     })
                 } else {
-                    console.log(results)
+                    // console.log(results)
                     responseErr()
                 }
             })
         } else {
-            console.log(4)
             responseErr('username and password something wrong')
         }
     } catch (err) {
@@ -512,7 +506,7 @@ app.get('/mysql/:token', (req, res) => {
             con.query('select * from data ', function (error, results, fields) {
                 if (error) throw error;
                 if(results[0]){
-                    
+
                 }
                 res.status(200).json({
                     data: results
