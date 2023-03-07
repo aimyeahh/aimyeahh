@@ -171,7 +171,6 @@ app.post('/api/signup', (req, res) => {
     let password = req.body.password
     try {
         if (username && password && (password.length >= 8)) {
-            username = username
             password = MD5(password)
             con.query('select * from member where username =  ? ', [username], function (error, results, fields) {
                 if (error) {
