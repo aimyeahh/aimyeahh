@@ -8,7 +8,8 @@ const jwt = require('jsonwebtoken');
 const secretKey = 'mypasswordissohard'
 const fs = require('fs');
 const multer = require('multer');
-// configure storage engine
+
+// configure storage engine 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, "./uploads");
@@ -18,7 +19,7 @@ const storage = multer.diskStorage({
     }
 });
 
-// initialize upload object
+// initialize upload object 
 const upload = multer({
     storage: storage
 });
@@ -66,6 +67,7 @@ app.post('/api/todolist', (req, res) => {
     });
 
 })
+
 function decodeToken(token) {
     try {
         let decoded = jwt.verify(token, secretKey);
@@ -75,6 +77,7 @@ function decodeToken(token) {
         console.log('token :', err)
     }
 }
+
 app.post('/api/insert/todolist', (req, res) => {
     let text = req.body.text
     let token = req.body.token
@@ -129,6 +132,7 @@ app.post('/api/remove/todolist', (req, res) => {
         }
     });
 })
+
 app.post('/api/edit/todolist', (req, res) => {
     // let user = req.body.user
     let planid = req.body.planid
@@ -204,6 +208,7 @@ app.post('/api/signup', (req, res) => {
         responseErr()
     }
 })
+
 app.post('/api/login', (req, res) => {
     console.log('login API')
     let username = req.body.username
@@ -272,6 +277,7 @@ app.post('/api/profile', (req, res) => {
         }
     }
 })
+
 app.post('/api/subject/insert', (req, res) => {
     try {
         let token = req.body.token
@@ -334,6 +340,7 @@ app.post('/api/subject/:subject', (req, res) => {
         })
     }
 })
+
 app.post('/api/upload', upload.array('file'), (req, res) => {
     try {
         let file = req.files;
@@ -384,6 +391,7 @@ app.post('/api/upload', upload.array('file'), (req, res) => {
         })
     }
 });
+
 app.get('/api/show/post', (req, res) => {
     try {
         con.query(`select id,hashtag ,path,title,writer from uploads_data where status != 'remove'`, (err, results) => {
@@ -396,6 +404,7 @@ app.get('/api/show/post', (req, res) => {
         res.status(400).json({ msg: 'something err' })
     }
 })
+
 app.post('/api/show/fev', (req, res) => {
     try {
         let token = req.body.token
@@ -412,6 +421,7 @@ app.post('/api/show/fev', (req, res) => {
         res.status(400).json({ msg: 'something err' })
     }
 })
+
 app.post('/api/fev/:status', (req, res) => {
     try {
         let status = req.params.status
@@ -447,6 +457,7 @@ app.post('/api/fev/:status', (req, res) => {
         res.status(400).json({ msg: 'something err' })
     }
 })
+
 app.post('/api/del/post', (req, res) => {
     try {
         let token = req.body.token
@@ -463,125 +474,6 @@ app.post('/api/del/post', (req, res) => {
         res.status(400).json({ msg: 'something err' })
     }
 })
-
-
-
-
-
-
-//learning 
-
-//jwt
-var jwt2 = require('jsonwebtoken');//npm i jsonwebtoken https://www.npmjs.com/package/jsonwebtoken
-let secretKey2 = 'aim'
-// var token = jwt2.sign({ data: [0, 1, 2, 3, 4] }, secretKey2);
-// console.log(token)
-// var decoded2 = jwt2.verify(token, secretKey2);
-// console.log(decoded2.data[0])
-
-app.get('/gettoken', (req, res) => {
-    try {
-        var token = jwt2.sign({ data: [0, 1, 2, 3, 4] }, secretKey2);
-        console.log(token)
-        var decoded2 = jwt2.verify(token, secretKey2);
-        console.log(decoded2.data[0])
-        res.status(200).json({
-            token : token
-        })
-        
-    } catch (err) {
-        res.status(400).json({
-            data: "errr"
-        })
-    }
-
-})
-
-app.get('/mysql/:token', (req, res) => {
-    try {
-        let gettoken = req.params.token
-        let decoded2 = jwt2.verify(gettoken, secretKey2);
-        if(decoded2){
-            con.query('select * from data ', function (error, results, fields) {
-                if (error) throw error;
-                if(results[0]){
-
-                }
-                res.status(200).json({
-                    data: results
-                })
-            });
-        }else{
-            res.status(400).json({
-                data: 'err'
-            })
-        }
-        
-    } catch (err) {
-        res.status(400).json({
-            data: "errr"
-        })
-    }
-
-})
-
-app.post('/login2' , (req, res) =>{
-    try{
-        let username = req.body.username
-        let password = req.body.password
-        if(username && password){
-            password = MD5(password)
-            con.query(`SELECT * FROM member WHERE username  = ? and password = ?;`, [username,password],function (error, results, fields) {
-                if (error) throw error;
-                if(results[0]){
-                    var token = jwt2.sign({ data: [0, 1, 2, 3, 4] }, secretKey2);
-                    res.status(200).json({
-                        token: token
-                    })
-                }
-                else{
-                    res.status(400).json({
-                        data: 'err'
-                    })
-                }
-               
-            });
-        }else{
-            res.status(400).json({
-                data: 'err'
-            })
-        }
-
-    } catch (err) {
-        res.status(400).json({
-            data: "errr"
-        })
-    }
-})
-
-app.post('/checktoken', (req, res) => {
-    try {
-        let gettoken = req.body.token
-        let decoded2 = jwt2.verify(gettoken, secretKey2);
-        if(decoded2){
-            res.status(200).json({
-                msg: 'good'
-            })
-            
-        }else{
-            res.status(200).json({
-                msg: 'bad'
-            })
-        }
-        
-    } catch (err) {
-        res.status(400).json({
-            data: "errr"
-        })
-    }
-
-})
-
 
 
 
