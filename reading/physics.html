@@ -160,7 +160,7 @@
 			"token": localStorage.getItem('token')
 		});
 
-		let response = await fetch(localStorage.getItem('ip')')+"/api/subject/physics", {
+		let response = await fetch(localStorage.getItem('ip')+"/api/subject/physics", {
 			method: "POST",
 			body: bodyContent,
 			headers: headersList
@@ -205,3 +205,4 @@
 	}
 </script>
 <script src="./js/profile.js"></script>
+<script src="./js/timer.js"></script>
