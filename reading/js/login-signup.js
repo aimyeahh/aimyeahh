@@ -14,7 +14,7 @@ async function onclickSignup (){
              "password" : signuppassid.value+''
            });
            
-           let response = await fetch("http://localhost:3000/api/signup", { 
+           let response = await fetch(localStorage.getItem(ip)+"/api/signup", { 
              method: "POST",
              body: bodyContent,
              headers: headersList
