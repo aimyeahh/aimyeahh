@@ -53,7 +53,7 @@
 					<!-- content -->
 					<!-- <div class="card-container">
 						<div class="box" >
-							<img class="img-inbox" src=localStorage.getItem(ip)+"/1676087960612-bear.png" alt="">
+							<img class="img-inbox" src=localStorage.getItem('ip')+"/1676087960612-bear.png" alt="">
 						</div>
 						<div class="container-content">
 							<div class="content">
@@ -67,7 +67,7 @@
 					</div>
 					<div class="card-container">
 						<div class="box" '>
-							<img class="img-inbox" src=localStorage.getItem(ip)+"/1676087960612-bear.png" alt="">
+							<img class="img-inbox" src=localStorage.getItem('ip')+"/1676087960612-bear.png" alt="">
 						</div>
 						<div class="container-content">
 							<div class="content">
@@ -264,7 +264,7 @@
 		}
 		const fetchgetFev = async (type) => {
 			// console.log('obj', obj)
-			let response = await fetch(localStorage.getItem(ip)+'/api/fev/' + type, {
+			let response = await fetch(localStorage.getItem('ip')+'/api/fev/' + type, {
 				headers: headersList,
 				method: "POST",
 				body: JSON.stringify({
@@ -309,7 +309,7 @@
 		formData.append('user', localStorage.getItem('user'));
 		formData.append('head', upload_getvalue.value);
 		formData.append('hashtages', MAJOR_FOR_SEND);
-		fetch(localStorage.getItem(ip)+'/api/upload', {
+		fetch(localStorage.getItem('ip')+'/api/upload', {
 			method: 'POST',
 			body: formData
 		})
@@ -353,7 +353,7 @@
 				let fev = fillter_fev.includes(post.id) ? './img/fevfullstar.svg' : './img/starnonfull.svg'
 				html += `<div class="card-container">
 						<div class="box" onclick='showdownload(${JSON.stringify(post)})'>
-							<img class="img-inbox" src=localStorage.getItem(ip)+"/${srcimg1}" alt="">
+							<img class="img-inbox" src=${localStorage.getItem('ip')}/${srcimg1} alt="">
 						</div>
 						<div class="container-content">
 							<div class="content">
@@ -379,7 +379,7 @@
 				"Accept": "*/*",
 				"Content-Type": "application/json"
 			}
-			let response = await fetch(localStorage.getItem(ip)+"/api/show/post", {
+			let response = await fetch(localStorage.getItem('ip')+"/api/show/post", {
 				method: "GET",
 				headers: headersList
 			});
@@ -389,7 +389,7 @@
 			data = data.data
 			GLOBAL_POST_DATA = data
 			let html = ''
-			let response_fev = await fetch(localStorage.getItem(ip)+"/api/show/fev", {
+			let response_fev = await fetch(localStorage.getItem('ip')+"/api/show/fev", {
 				method: "POST",
 				body: JSON.stringify({
 					token: localStorage.getItem('token')
@@ -409,7 +409,7 @@
 				let fev = fillter_fev.includes(post.id) ? './img/fevfullstar.svg' : './img/starnonfull.svg'
 				html += `<div class="card-container">
 						<div class="box" onclick='showdownload(${JSON.stringify(post)})'>
-							<img class="img-inbox" src=localStorage.getItem(ip)+"/${srcimg1}" alt="">
+							<img class="img-inbox" src=${localStorage.getItem('ip')}/${srcimg1} alt="">
 						</div>
 						<div class="container-content">
 							<div class="content">
@@ -487,7 +487,7 @@
 			"Content-Type": "application/json"
 		}
 		try {
-			let response = await fetch(localStorage.getItem(ip)+"/api/del/post", {
+			let response = await fetch(localStorage.getItem('ip')+"/api/del/post", {
 				method: "POST",
 				body: JSON.stringify({
 					token: localStorage.getItem('token'),
@@ -547,7 +547,7 @@
 				if (fillter_fev.includes(post.id)) {
 					html += `<div id='post_container${post.id}' class="card-container">
 						<div class="box" onclick='showdownload(${JSON.stringify(post)})'>
-							<img class="img-inbox" src=localStorage.getItem(ip)+"/${srcimg1}" alt="">
+							<img class="img-inbox" src=${localStorage.getItem('ip')}/${srcimg1} alt="">
 						</div>
 						<div class="container-content">
 							<div class="content">

@@ -10,7 +10,7 @@ async function loginbyaim() {
       "password": passwordid.value + ''
     });
 
-    let response = await fetch(ip_address_localhost + "/api/login", {
+    let response = await fetch(localStorage.getItem('ip') + "/api/login", {
       method: "POST",
       body: bodyContent,
       headers: headersList

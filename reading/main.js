@@ -1,7 +1,7 @@
 render()
 var todolistdata = ''
 function render() {
-	fetch(localStorage.getItem(ip)+"/api/todolist", {
+	fetch(localStorage.getItem('ip')+"/api/todolist", {
 		method: "POST",
 		headers: {
 			'Content-Type': 'application/json'
@@ -56,7 +56,7 @@ async function edittodolist(editelem, inputelem, idedit) {
 		inputelem.setAttribute("readonly", "readonly");
 		console.log('editelem',inputelem.value)
 		try {
-			let data = await fetch(localStorage.getItem(ip)+"/api/edit/todolist", {
+			let data = await fetch(localStorage.getItem('ip')+"/api/edit/todolist", {
 				method: "POST",
 				headers: {
 					'Content-Type': 'application/json'
@@ -78,7 +78,7 @@ async function edittodolist(editelem, inputelem, idedit) {
 async function deletetodolist(e, elemplanid) {
 	try {
 		console.log('deletetodolist')
-		let update = await fetch(localStorage.getItem(ip)+'/api/remove/todolist', {
+		let update = await fetch(localStorage.getItem('ip')+'/api/remove/todolist', {
 			method: "POST",
 			headers: {
 				'Content-Type': 'application/json'
@@ -101,7 +101,7 @@ async function inserttodolist() {
 	let valueinsert = document.getElementById('new-plan-input').value
 	console.log('xxxx-insert-xxxx', valueinsert)
 	try {
-		let data = await fetch(localStorage.getItem(ip)+"/api/insert/todolist", {
+		let data = await fetch(localStorage.getItem('ip')+"/api/insert/todolist", {
 			method: "POST",
 			headers: {
 				'Content-Type': 'application/json'

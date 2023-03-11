@@ -39,14 +39,16 @@
     </div>
   </div>
 
-  <script src="./js/login.js"></script>
-
 </body>
 
 </html>
 
 <script>
-  const ipAddress = 'http://192.168.1.53:3000'
+  // const ipAddress = 'http://192.168.1.53:3000'
+const ipAddress = 'http://localhost:3000'
  localStorage.setItem('ip',ipAddress)
- localStorage.getItem(ip)
+
+ console.log( localStorage.getItem('ip'))
 </script>
+
+<script src="./js/login.js"></script>

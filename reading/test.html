@@ -24,7 +24,7 @@
                 formData.append('file', input.files[i]);
             }
             console.log(formData)
-            fetch(localStorage.getItem(ip)+'/api/upload', {
+            fetch(localStorage.getItem('ip')+'/api/upload', {
                 method: 'POST',
                 body: formData
             })

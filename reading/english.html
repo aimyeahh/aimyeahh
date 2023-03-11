@@ -132,7 +132,7 @@
 					num_all: parseFloat(input2),
 					num_correct: parseFloat(input3)
 				}
-				const response = await fetch(localStorage.getItem(ip)+'/api/subject/insert', {
+				const response = await fetch(localStorage.getItem('ip')+'/api/subject/insert', {
 					method: 'POST',
 					headers: {
 						"Accept": "*/*",
@@ -175,7 +175,7 @@
 			"token": localStorage.getItem('token')
 		});
 
-		let response = await fetch(localStorage.getItem(ip)+"/api/subject/eng", {
+		let response = await fetch(localStorage.getItem('ip')+"/api/subject/eng", {
 			method: "POST",
 			body: bodyContent,
 			headers: headersList

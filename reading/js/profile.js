@@ -1,5 +1,5 @@
 <script src="./global.js"></script>
-console.log(ip_address_localhost)
+console.log(localStorage.getItem('ip'))
 getprofile()
 async function getprofile() {
   let headersList = {
