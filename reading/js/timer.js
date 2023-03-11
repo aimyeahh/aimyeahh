@@ -5,6 +5,8 @@ let check = Number(localStorage.getItem('total'))
 let total = 00
 if( check > 0){
     interval = setInterval(Timer, 1000);
+}else{
+    clearInterval(interval)
 }
 function totalValue(){
     let hour = Number(localStorage.getItem('hour'))
