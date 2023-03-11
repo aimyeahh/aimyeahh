@@ -73,7 +73,6 @@
     justify-content: center;
     align-items: center;
     font-size: 1rem;
-    padding-top: 10px;
 
 }
 
@@ -91,7 +90,7 @@
     object-fit: fill;
 }
 .card-container>.container-content {
-    padding-top: 5px;
+    padding-top: 10px;
     width: 80%;
 }
 
@@ -225,5 +224,5 @@
     font-size: 6px;
     color: #979797;
     align-self: flex-start;
-    padding: 0 10%
+    padding: 2px 10%
 }
