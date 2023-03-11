@@ -8,7 +8,7 @@ if (check > 0) {
     document.getElementById('hour').value = localStorage.getItem('hour')
     document.getElementById('minute').value = localStorage.getItem('minute')
     document.getElementById('second').value = localStorage.getItem('second')
-    interval = setInterval(Timer, 1000);
+    // interval = setInterval(Timer, 1000);
 } else {
     localStorage.setItem('hour', hour.value)
     localStorage.setItem('minute', minute.value)
@@ -48,7 +48,7 @@ function Timer(){
         localStorage.setItem('second', second.value)
     }
     else {
-
+        console.log('checkkkkkkkkk1111')
         let sound = new Audio('sound.mp3');
         sound.play();
         clearInterval(interval);
