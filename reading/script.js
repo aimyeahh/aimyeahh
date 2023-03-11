@@ -1,9 +1,19 @@
 const hour = document.getElementById('hour');
 const minute = document.getElementById('minute');
 const second = document.getElementById('second');
-localStorage.setItem('hour', hour)
-localStorage.setItem('minute', minute)
-localStorage.setItem('second', second)
+
+
+let check = Number(localStorage.getItem('total'))
+if (check > 0) {
+    document.getElementById('hour').value = localStorage.getItem('hour')
+    document.getElementById('minute').value = localStorage.getItem('minute')
+    document.getElementById('second').value = localStorage.getItem('second')
+    interval = setInterval(Timer, 1000);
+} else {
+    localStorage.setItem('hour', hour.value)
+    localStorage.setItem('minute', minute.value)
+    localStorage.setItem('second', second.value)
+}
 
 const start = document.getElementById('start');
 const reset = document.getElementById('reset');
@@ -19,7 +29,7 @@ totalValue = () => {
     localStorage.setItem('total', total)
 }
 
-Timer = () => {
+function Timer(){
     totalValue();
     total--;
     console.log(total)
@@ -32,7 +42,8 @@ Timer = () => {
         hour.value = hr;
         minute.value = mt;
         second.value = sc;
-        localStorage.setItem('hour',  hour.value)
+
+        localStorage.setItem('hour', hour.value)
         localStorage.setItem('minute', minute.value)
         localStorage.setItem('second', second.value)
     }
@@ -60,6 +71,9 @@ reset.addEventListener('click', () => {
     hour.value = '00';
     minute.value = '00';
     second.value = '00';
+    localStorage.setItem('hour', "00")
+    localStorage.setItem('minute', "00")
+    localStorage.setItem('second', "00")
 
     disp.innerText = "Timer Reset";
 });
