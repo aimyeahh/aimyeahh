@@ -44,7 +44,8 @@
 			<div class="search">
 				<input type="text" onclick="render_post()" onkeyup="filtersSearch(this)" name="" id="searchpost">
 				<img class="icon-search" src="./img/iconsearch.svg"></img>
-				<img id="swap111" onclick="swapupload(this)" style="object-fit: contain; " src="./img/uploadaim2.png" alt="upload">
+				<img id="swap111" onclick="swapupload(this)" style="object-fit: contain; " src="./img/uploadaim2.png"
+					alt="upload">
 				<img id="fev_image" src="./img/fev222.png" onclick="fillter_Fev(this)" class="imgfev" alt="">
 			</div>
 			<div style="overflow: scroll;height: 84vh;">
@@ -148,7 +149,8 @@
 	</div>
 	<div id="downloadpage" style="background-color: white;display: none;width: 100%; " class="downloadpage">
 		<div style="display: flex; height: 5vh; flex-direction: row; align-items: center;">
-			<div style="width: 50%; padding-left: 10px;" onclick="downloadpage.style.display = 'none';Download_all_path = [];">
+			<div style="width: 50%; padding-left: 10px;"
+				onclick="downloadpage.style.display = 'none';Download_all_path = [];">
 				<span>close</span>
 			</div>
 			<div onclick="downloadImage(For_Download_Image)" style="width: 50%; text-align: end;padding-right: 10px;">
@@ -236,7 +238,7 @@
 		let swap = document.querySelector('.grid-container').getAttribute('class')
 		let post = document.querySelector('.grid-container')
 		let upload = document.querySelector('.upload-container')
-		if (switch_fev){
+		if (switch_fev) {
 			await fillter_Fev(fev_image)
 		}
 		if (swap.includes('open')) {
@@ -264,7 +266,7 @@
 		}
 		const fetchgetFev = async (type) => {
 			// console.log('obj', obj)
-			let response = await fetch(localStorage.getItem('ip')+'/api/fev/' + type, {
+			let response = await fetch(localStorage.getItem('ip') + '/api/fev/' + type, {
 				headers: headersList,
 				method: "POST",
 				body: JSON.stringify({
@@ -276,7 +278,7 @@
 			return data
 		}
 		if (star.includes('fevfullstar')) {
-			if(containner_id){
+			if (containner_id) {
 				containner_id.style.display = 'none'
 			}
 			fetchgetFev('off')
@@ -309,7 +311,7 @@
 		formData.append('user', localStorage.getItem('user'));
 		formData.append('head', upload_getvalue.value);
 		formData.append('hashtages', MAJOR_FOR_SEND);
-		fetch(localStorage.getItem('ip')+'/api/upload', {
+		fetch(localStorage.getItem('ip') + '/api/upload', {
 			method: 'POST',
 			body: formData
 		})
@@ -321,7 +323,7 @@
 						alert('uploads file สำเร็จ')
 						swapupload(swap111)
 						render_post()
-					}else{
+					} else {
 						alert('uploads file ไม่สำเร็จกรุณาลองใหม่')
 						swapupload(swap111)
 						render_post()
@@ -347,6 +349,8 @@
 		let html = ''
 		let search_text = e.value
 		data.reverse().map(post => {
+			
+			let download_count = post.download_count
 			let user_del = localStorage.getItem('user') === post.writer ? `<img style="width: 15px;margin-left:5px" class="" onclick="swal_remove(${post.id})" src="./img/del.svg" alt="">` : ''
 			if (post.hashtag.includes(search_text)) {
 				let srcimg1 = post.path.split(',')[0]
@@ -358,13 +362,14 @@
 						<div class="container-content">
 							<div class="content">
 								<span>${post.title}</span>
-								<span style="text-align: start;">upload file by : ${post.writer}</span>
+								<span style="text-align: start;">user : ${post.writer}</span>
 							</div>
 							<span class="toflex">
 								<img id="${'img' + post.id}" class="img-star" onclick="fev(this,${post.id})" src="${fev}" alt="">
 								${user_del}
 							</span>
 						</div>
+						<div class = "mini-download">${download_count} downloads</div>
 					</div>`
 			}
 		})
@@ -379,7 +384,7 @@
 				"Accept": "*/*",
 				"Content-Type": "application/json"
 			}
-			let response = await fetch(localStorage.getItem('ip')+"/api/show/post", {
+			let response = await fetch(localStorage.getItem('ip') + "/api/show/post", {
 				method: "GET",
 				headers: headersList
 			});
@@ -389,7 +394,7 @@
 			data = data.data
 			GLOBAL_POST_DATA = data
 			let html = ''
-			let response_fev = await fetch(localStorage.getItem('ip')+"/api/show/fev", {
+			let response_fev = await fetch(localStorage.getItem('ip') + "/api/show/fev", {
 				method: "POST",
 				body: JSON.stringify({
 					token: localStorage.getItem('token')
@@ -404,9 +409,11 @@
 			}).map(d => d.ud_id)
 			GLOBAL_FEV_DATA = fillter_fev
 			data.reverse().map(post => {
+				
+				let download_count = post.download_count
 				let user_del = localStorage.getItem('user') === post.writer ? `<img style="width: 15px;margin-left:5px" class="" onclick="swal_remove(${post.id})" src="./img/del.svg" alt="">` : ''
 				let srcimg1 = post.path.split(',')[0]
-				let src =  localStorage.getItem('ip')+'/' + srcimg1
+				let src = localStorage.getItem('ip') + '/' + srcimg1
 				// console.log(src)
 				let fev = fillter_fev.includes(post.id) ? './img/fevfullstar.svg' : './img/starnonfull.svg'
 				html += `<div class="card-container">
@@ -416,13 +423,14 @@
 						<div class="container-content">
 							<div class="content">
 								<span>${post.title}</span>
-								<span style="text-align: start;">uploaded file by : ${post.writer}</span>
+								<span style="text-align: start;">user : ${post.writer}</span>
 							</div>
 							<span class="toflex">
 								<img id="${'img' + post.id}" class="img-star" onclick="fev(this,${post.id})" src="${fev}" alt="">
 								${user_del}
 							</span>
 						</div>
+						<div class = "mini-download">${download_count} downloads</div>
 					</div>`
 			})
 			showallpost.innerHTML = html
@@ -432,33 +440,34 @@
 			alert('something err')
 		}
 	}
-	function clickImage(n){
-		console.log('check click image ',n)
+	function clickImage(n) {
+		console.log('check click image ', n)
 		let check_between = ITEM_AFTER - n
-		console.log('check check_between ',check_between)
-		if (ITEM_AFTER > n){
+		console.log('check check_between ', check_between)
+		if (ITEM_AFTER > n) {
 			console.log('back')
 			plusSlides(check_between * -1)
-		}else if(ITEM_AFTER < n){
+		} else if (ITEM_AFTER < n) {
 			console.log('forward')
 			plusSlides(Math.abs(check_between))
 		}
 		ITEM_AFTER = n
-		
+
 		// for (let index = 0; index < check_between; index++) {
 		// 	const element = array[index];
-			
+
 		// }
 	}
 	let ITEM_AFTER = 1
+	var ud_id = 0;
 	function showdownload(obj) {
-		// console.log(obj)
+		ud_id = obj.id
 		let imgToArr = obj.path.split(',')
 		let html = '' //image bar
 		let html2 = ''//main image
 		let allnum = imgToArr.length
-		imgToArr.forEach((e,index) => {
-			html += `<img onclick="clickImage(${index+1})" class='borderimge1' style="width: 22%; height: 12vh;" src="./${e}">`
+		imgToArr.forEach((e, index) => {
+			html += `<img onclick="clickImage(${index + 1})" class='borderimge1' style="width: 22%; height: 12vh;" src="./${e}">`
 		});
 		imgToArr.forEach((e, index) => {
 			Download_all_path.push(e)
@@ -489,7 +498,7 @@
 			"Content-Type": "application/json"
 		}
 		try {
-			let response = await fetch(localStorage.getItem('ip')+"/api/del/post", {
+			let response = await fetch(localStorage.getItem('ip') + "/api/del/post", {
 				method: "POST",
 				body: JSON.stringify({
 					token: localStorage.getItem('token'),
@@ -515,6 +524,7 @@
 
 	}
 	// let Download_all_path = []
+
 	function downloadImage(url) {
 		Download_all_path.forEach(e => {
 			url = e
@@ -524,25 +534,46 @@
 			link.click();
 		})
 		Download_all_path = []
+
+		const url_api = localStorage.getItem('ip') + '/api/download-count';
+		const token = localStorage.getItem('token');
+		const data = { token ,id : ud_id };
+
+		fetch(url_api, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(data)
+		})
+			.then(response => response.json())
+			.then(result => {
+				console.log(result)
+			})
+			.catch(error => { 
+				alert('somethin err') 
+			});
 	}
 	let switch_fev = false
 	async function fillter_Fev(e) {
 		await render_post()
 		let checkupload = document.querySelector('.upload-container').className.includes('open')
-		if (checkupload){
+		if (checkupload) {
 			await swapupload(swap111)
 			switch_fev = false
 		}
 		switch_fev = !switch_fev
-		switch_fev ? e.src = './img/fev111.png': e.src = './img/fev222.png'
+		switch_fev ? e.src = './img/fev111.png' : e.src = './img/fev222.png'
 
 		let html = ''
 		let fillter_fev = ''
 		fillter_fev = GLOBAL_FEV_DATA
 		let data = GLOBAL_POST_DATA
-		console.log('switch_fev',switch_fev)
+		console.log('switch_fev', switch_fev)
 		if (switch_fev) {
 			data.reverse().map(post => {
+				
+				let download_count = post.download_count
 				let user_del = localStorage.getItem('user') === post.writer ? `<img style="width: 15px;margin-left:5px" class="" onclick="swal_remove(${post.id})" src="./img/del.svg" alt="">` : ''
 				let srcimg1 = post.path.split(',')[0]
 				let fev = fillter_fev.includes(post.id) ? './img/fevfullstar.svg' : './img/starnonfull.svg'
@@ -554,13 +585,14 @@
 						<div class="container-content">
 							<div class="content">
 								<span>${post.title}</span>
-								<span style="text-align: start;">upload file by : ${post.writer}</span>
+								<span style="text-align: start;">user : ${post.writer}</span>
 							</div>
 							<span class="toflex">
 								<img id="${'img' + post.id}" class="img-star" onclick="fev(this,${post.id},post_container${post.id})" src="${fev}" alt="">
 								${user_del}
 							</span>
 						</div>
+						<div class = "mini-download">${download_count} downloads</div>
 					</div>`
 				} else {
 					html += ''

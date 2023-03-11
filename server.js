@@ -394,7 +394,7 @@ app.post('/api/upload', upload.array('file'), (req, res) => {
 
 app.get('/api/show/post', (req, res) => {
     try {
-        con.query(`select id,hashtag ,path,title,writer from uploads_data where status != 'remove'`, (err, results) => {
+        con.query(`select id,hashtag ,path,title,writer,download_count from uploads_data where status != 'remove'`, (err, results) => {
             if (err) res.status(400).json({ msg: 'query data base err' })
             else {
                 res.status(200).json({ msg: 'success', data: results, code: 0 })
@@ -471,6 +471,32 @@ app.post('/api/del/post', (req, res) => {
             }
         })
     } catch (err) {
+        res.status(400).json({ msg: 'something err' })
+    }
+})
+
+app.post('/api/download-count',(req,res)=>{
+    try{
+        let token = req.body.token
+        let decode = decodeToken(token)
+        let ud_id = req.body.id
+        let mid = decode.mid
+        console.log('mid',mid,'ud_id',ud_id)
+        con.query(`select download_count from uploads_data where id = ? and mid = ?  `, [ud_id,mid], (err, results) => {
+            if (err) res.status(400).json({ msg: 'query data base err' })
+            if (results) {
+                let count = results[0].download_count;
+                count++;
+                con.query(`UPDATE uploads_data SET download_count = ? where id = ? and mid = ?`, [count,ud_id,mid], (err, results) => {
+                    if (err) res.status(400).json({ msg: 'query data base err' })
+                    if (results) {
+                        // console.log(results)
+                        res.status(200).json({ msg: 'success', code: 0 })
+                    }
+                })
+            }
+        })
+    }catch{
         res.status(400).json({ msg: 'something err' })
     }
 })
