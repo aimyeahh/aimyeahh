@@ -346,7 +346,7 @@
 		let fillter_fev = GLOBAL_FEV_DATA
 		let html = ''
 		let search_text = e.value
-		data.map(post => {
+		data.reverse().map(post => {
 			let user_del = localStorage.getItem('user') === post.writer ? `<img style="width: 15px;margin-left:5px" class="" onclick="swal_remove(${post.id})" src="./img/del.svg" alt="">` : ''
 			if (post.hashtag.includes(search_text)) {
 				let srcimg1 = post.path.split(',')[0]
@@ -403,13 +403,15 @@
 				return data.status == 'on'
 			}).map(d => d.ud_id)
 			GLOBAL_FEV_DATA = fillter_fev
-			data.map(post => {
+			data.reverse().map(post => {
 				let user_del = localStorage.getItem('user') === post.writer ? `<img style="width: 15px;margin-left:5px" class="" onclick="swal_remove(${post.id})" src="./img/del.svg" alt="">` : ''
 				let srcimg1 = post.path.split(',')[0]
+				let src =  localStorage.getItem('ip')+'/' + srcimg1
+				// console.log(src)
 				let fev = fillter_fev.includes(post.id) ? './img/fevfullstar.svg' : './img/starnonfull.svg'
 				html += `<div class="card-container">
 						<div class="box" onclick='showdownload(${JSON.stringify(post)})'>
-							<img class="img-inbox" src=${localStorage.getItem('ip')}/${srcimg1} alt="">
+							<img class="img-inbox" src=${src} alt="">
 						</div>
 						<div class="container-content">
 							<div class="content">
@@ -540,7 +542,7 @@
 		let data = GLOBAL_POST_DATA
 		console.log('switch_fev',switch_fev)
 		if (switch_fev) {
-			data.map(post => {
+			data.reverse().map(post => {
 				let user_del = localStorage.getItem('user') === post.writer ? `<img style="width: 15px;margin-left:5px" class="" onclick="swal_remove(${post.id})" src="./img/del.svg" alt="">` : ''
 				let srcimg1 = post.path.split(',')[0]
 				let fev = fillter_fev.includes(post.id) ? './img/fevfullstar.svg' : './img/starnonfull.svg'
