@@ -1,3 +1,5 @@
+<script src="./global.js"></script>
+console.log(ip_address_localhost)
 getprofile()
 async function getprofile() {
   let headersList = {
@@ -9,7 +11,7 @@ async function getprofile() {
     "token": localStorage.getItem('token')
   });
 
-  let response = await fetch("http://localhost:3000/api/profile", {
+  let response = await fetch("http://192.168.1.53:3000/api/profile", {
     method: "POST",
     body: bodyContent,
     headers: headersList

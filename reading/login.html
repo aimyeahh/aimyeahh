@@ -1,43 +1,51 @@
 <!DOCTYPE html>
 <!-- Coding By CodingNepal - youtube.com/codingnepal -->
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login</title>
   <link rel="stylesheet" href="login.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
 </head>
+
 <body>
   <div style="display: flex; flex-direction: column; align-items: center;">
     <div><img style="width: 27P0px ; height: 150px;" src="./img/PLAN_A-4-removebg-preview.png"></div>
-  <div class="wrapper">
-    <header style="color: #6076b3;">Log in</header>
-    <form action="#">
-      <div class="field email"> 
-        <div class="input-area">
-          <input id="usernameid" type="text" placeholder="Username">
-          <i class="icon fas fa-envelope"></i>
-          <i class="error error-icon fas fa-exclamation-circle"></i>
+    <div class="wrapper">
+      <header style="color: #6076b3;">Log in</header>
+      <form action="#">
+        <div class="field email">
+          <div class="input-area">
+            <input id="usernameid" type="text" placeholder="Username">
+            <i class="icon fas fa-envelope"></i>
+            <i class="error error-icon fas fa-exclamation-circle"></i>
+          </div>
+          <div class="error error-txt">Email can't be blank</div>
         </div>
-        <div class="error error-txt">Email can't be blank</div>
-      </div>
-      <div class="field password">
-        <div class="input-area">
-          <input id="passwordid"  type="password" autocomplete="current-password" placeholder="Password">
-          <i class="icon fas fa-lock"></i>
-          <i class="error error-icon fas fa-exclamation-circle"></i>
+        <div class="field password">
+          <div class="input-area">
+            <input id="passwordid" type="password" autocomplete="current-password" placeholder="Password">
+            <i class="icon fas fa-lock"></i>
+            <i class="error error-icon fas fa-exclamation-circle"></i>
+          </div>
+          <div class="error error-txt">Password can't be blank</div>
         </div>
-        <div class="error error-txt">Password can't be blank</div>
-      </div>
-      <div style="padding-top: 20px;" class="pass-txt"><a href="#"></a></div>
-      <input onclick="loginbyaim()" type="button" value="Login">
-    </form>
-    <div class="sign-txt">Not yet member? <a href="./signup.html">Signup now</a></div>
-  </div>
+        <div style="padding-top: 20px;" class="pass-txt"><a href="#"></a></div>
+        <input onclick="loginbyaim()" type="button" value="Login">
+      </form>
+      <div class="sign-txt">Not yet member? <a href="./signup.html">Signup now</a></div>
+    </div>
   </div>
 
   <script src="./js/login.js"></script>
 
 </body>
+
 </html>
+
+<script>
+  const ipAddress = 'http://192.168.1.53:3000'
+ localStorage.setItem('ip',ipAddress)
+</script>

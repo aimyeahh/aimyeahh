@@ -1,3 +1,4 @@
+import ip_address_localhost from './global'
 async function loginbyaim() {
   try {
     let headersList = {
@@ -10,7 +11,7 @@ async function loginbyaim() {
       "password": passwordid.value + ''
     });
 
-    let response = await fetch("http://localhost:3000/api/login", {
+    let response = await fetch(ip_address_localhost + "/api/login", {
       method: "POST",
       body: bodyContent,
       headers: headersList
