@@ -482,18 +482,21 @@ app.post('/api/download-count',(req,res)=>{
         let ud_id = req.body.id
         let mid = decode.mid
         console.log('mid',mid,'ud_id',ud_id)
-        con.query(`select download_count from uploads_data where id = ? and mid = ?  `, [ud_id,mid], (err, results) => {
+        con.query(`select download_count from uploads_data where id = ?   `, [ud_id], (err, results) => {
             if (err) res.status(400).json({ msg: 'query data base err' })
-            if (results) {
+            if (results[0]) {
+                console.log('results',results)
                 let count = results[0].download_count;
                 count++;
-                con.query(`UPDATE uploads_data SET download_count = ? where id = ? and mid = ?`, [count,ud_id,mid], (err, results) => {
+                con.query(`UPDATE uploads_data SET download_count = ? where id = ? `, [count,ud_id], (err, results) => {
                     if (err) res.status(400).json({ msg: 'query data base err' })
                     if (results) {
                         // console.log(results)
                         res.status(200).json({ msg: 'success', code: 0 })
                     }
                 })
+            }else{
+                res.status(400).json({ msg: '00000', code: -2 })
             }
         })
     }catch{

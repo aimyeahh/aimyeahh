@@ -409,7 +409,7 @@
 			}).map(d => d.ud_id)
 			GLOBAL_FEV_DATA = fillter_fev
 			data.reverse().map(post => {
-				
+				console.log(post)
 				let download_count = post.download_count
 				let user_del = localStorage.getItem('user') === post.writer ? `<img style="width: 15px;margin-left:5px" class="" onclick="swal_remove(${post.id})" src="./img/del.svg" alt="">` : ''
 				let srcimg1 = post.path.split(',')[0]
@@ -534,7 +534,11 @@
 			link.click();
 		})
 		Download_all_path = []
-
+		update_count_download()
+		render_post()
+		
+	}
+	function update_count_download(){
 		const url_api = localStorage.getItem('ip') + '/api/download-count';
 		const token = localStorage.getItem('token');
 		const data = { token ,id : ud_id };
