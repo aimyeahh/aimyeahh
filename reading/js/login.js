@@ -1,4 +1,3 @@
-import ip_address_localhost from './global'
 async function loginbyaim() {
   try {
     let headersList = {
