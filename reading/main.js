@@ -113,6 +113,7 @@ async function inserttodolist() {
 			})
 		})
 		console.log(await data.json())
+		document.getElementById("new-plan-input").value = ''
 		render()
 	} catch (err) {
 		console.log(err)
