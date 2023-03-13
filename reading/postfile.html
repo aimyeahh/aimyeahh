@@ -113,7 +113,7 @@
 					</div>
 					<div class="b1">
 						<span class="fn1-a">แฮชแท็ก ( จงเลือก 1 แฮชแท็ก )</span>
-						<div class="grid-img-2">
+						<div id="all_hashtage" class="grid-img-2">
 							<div onclick="makeSelectBorder(this)">#ไทย</div>
 							<div onclick="makeSelectBorder(this)">#อังกฤษ</div>
 							<div onclick="makeSelectBorder(this)">#คณิต</div>
@@ -123,12 +123,24 @@
 							<div onclick="makeSelectBorder(this)">#gatpat</div>
 							<div onclick="makeSelectBorder(this)">#ฟิสิกส์</div>
 							<div onclick="makeSelectBorder(this)">#ประวัติ</div>
-							<div onclick="makeSelectBorder(this)">#อื่นๆ</div>
-							<div class="b2" onclick="makeSelectBorder(this)" >
+							<button style="" onclick="addHastag()">เพิ่มอื่นๆ</button>
+
+							<!-- <div class="b2" onclick="makeSelectBorder(this)" >
 								<input id="hashtags" class="make-border" class="update-input" type="text" name="hashtags" placeholder="#แฮชแท็ก">
-							  </div> 
+							  </div>  -->
 						</div>
 					</div>
+					<script>
+						function addHastag() {
+							var input = document.createElement('input');
+							// input.setAttribute('onclick', 'makeSelectBorder(this)');
+							input.setAttribute('onfocusout','makeSelectWithInput(this)')
+							var button = document.getElementById('all_hashtage').getElementsByTagName('button')[0];
+							input.value = '#'
+							document.getElementById('all_hashtage').insertBefore(input, button);
+						}
+
+					</script>
 					<div style="margin-top: 50px; display: flex;justify-content: center;">
 						<div id="uploadButton" class="btnby-upload-file">
 							Upload file
@@ -619,6 +631,21 @@
 	let MAJOR_FOR_SEND = []
 	function makeSelectBorder(e) {
 		let textContent = e.textContent
+		if (MAJOR_FOR_SEND.includes(textContent)) {
+			var index = MAJOR_FOR_SEND.indexOf(textContent);
+			if (index !== -1) {
+				MAJOR_FOR_SEND.splice(index, 1);
+				e.classList.remove('make-border')
+			}
+			console.log(MAJOR_FOR_SEND)
+		} else {
+			MAJOR_FOR_SEND.push(textContent)
+			e.classList.add('make-border')
+		}
+		console.log(MAJOR_FOR_SEND)
+	}
+	function makeSelectWithInput(e){
+		let textContent = e.value
 		if (MAJOR_FOR_SEND.includes(textContent)) {
 			var index = MAJOR_FOR_SEND.indexOf(textContent);
 			if (index !== -1) {
