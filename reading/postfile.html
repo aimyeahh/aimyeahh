@@ -134,10 +134,16 @@
 						function addHastag() {
 							var input = document.createElement('input');
 							// input.setAttribute('onclick', 'makeSelectBorder(this)');
-							input.setAttribute('onfocusout','makeSelectWithInput(this)')
+							input.setAttribute('onfocusout', 'makeSelectWithInput(this)')
 							var button = document.getElementById('all_hashtage').getElementsByTagName('button')[0];
 							input.value = '#'
 							document.getElementById('all_hashtage').insertBefore(input, button);
+						}
+						function clearInputs() {
+							var inputs = document.getElementById('all_hashtage').getElementsByTagName('input');
+							for (var i = inputs.length - 1; i >= 0; i--) {
+								inputs[i].parentNode.removeChild(inputs[i]);
+							}
 						}
 
 					</script>
@@ -268,6 +274,7 @@
 			upload_getvalue.value = ''
 			e.src = './img/uploadaim.png'
 		} else {
+			clearInputs()
 			e.src = './img/uploadaim2.png'
 			post.classList.add('open')
 			upload.classList.remove('open')
@@ -644,7 +651,7 @@
 		}
 		console.log(MAJOR_FOR_SEND)
 	}
-	function makeSelectWithInput(e){
+	function makeSelectWithInput(e) {
 		let textContent = e.value
 		if (MAJOR_FOR_SEND.includes(textContent)) {
 			var index = MAJOR_FOR_SEND.indexOf(textContent);

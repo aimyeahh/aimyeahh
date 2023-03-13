@@ -15,7 +15,7 @@ const storage = multer.diskStorage({
         cb(null, "./uploads");
     },
     filename: function (req, file, cb) {
-        cb(null, Date.now() + "-" + file.originalname.replaceAll(' ','-'));
+        cb(null, Date.now() + "-" + file.originalname.replaceAll(' ', '-'));
     }
 });
 
@@ -475,35 +475,74 @@ app.post('/api/del/post', (req, res) => {
     }
 })
 
-app.post('/api/download-count',(req,res)=>{
-    try{
+app.post('/api/download-count', (req, res) => {
+    try {
         let token = req.body.token
         let decode = decodeToken(token)
         let ud_id = req.body.id
         let mid = decode.mid
-        console.log('mid',mid,'ud_id',ud_id)
+        console.log('mid', mid, 'ud_id', ud_id)
         con.query(`select download_count from uploads_data where id = ?   `, [ud_id], (err, results) => {
             if (err) res.status(400).json({ msg: 'query data base err' })
             if (results[0]) {
-                console.log('results',results)
+                console.log('results', results)
                 let count = results[0].download_count;
                 count++;
-                con.query(`UPDATE uploads_data SET download_count = ? where id = ? `, [count,ud_id], (err, results) => {
+                con.query(`UPDATE uploads_data SET download_count = ? where id = ? `, [count, ud_id], (err, results) => {
                     if (err) res.status(400).json({ msg: 'query data base err' })
                     if (results) {
                         // console.log(results)
                         res.status(200).json({ msg: 'success', code: 0 })
                     }
                 })
-            }else{
+            } else {
                 res.status(400).json({ msg: '00000', code: -2 })
             }
         })
-    }catch{
+    } catch {
         res.status(400).json({ msg: 'something err' })
     }
 })
 
+app.post('/api/add-subject', (req, res) => {
+    try {
+        let token = req.body.token
+        let subject = req.body.subject
+        let decode = decodeToken(token)
+        let mid = decode.mid
+        console.log(subject)
+        con.query(`
+        INSERT INTO custom_subject (subject, mid )
+        VALUES (?, ?);`, [subject, mid], (err, results) => {
+            if (err) res.status(400).json({ msg: 'query data base err' })
+            console.log('result',err)
+            if (results) {
+                
+                res.status(200).json({ msg: 'success', code: 0 })
+            }
+        })
+    } catch {
+        res.status(400).json({ msg: 'something err' })
+    }
+})
+
+app.post('/api/select/subject', (req, res) => {
+    try {
+        let token = req.body.token
+        let decode = decodeToken(token)
+        let mid = decode.mid
+        con.query(`
+        select * from custom_subject where mid = ?
+        `, [mid], (err, results) => {
+            if (err) res.status(400).json({ msg: 'query data base err' })
+            if (results) {
+                res.status(200).json({ msg: 'success', code: 0 ,data : results})
+            }
+        })
+    } catch {
+        res.status(400).json({ msg: 'something err' })
+    }
+})
 
 
 
