@@ -20,7 +20,9 @@
 </head>
 
 <body>
-
+	<div class="add" onclick="openModalGrade()">
+		<img class="addvector" src="./img/Vector.png">
+	</div>
 
 	<header style="background: #c862a2">
 		<div style="display: flex; flex-direction: row;">
@@ -30,9 +32,9 @@
 	</header>
 	<div
 		style="position : relative ; bottom: 0; background-color: white;height: 60vh; display: inline-flex; flex-direction: column; align-items: center; ">
-		<div class="add" onclick="openModalGrade()">
+		<!-- <div class="add" onclick="openModalGrade()">
 			<img class="addvector" src="./img/Vector.png">
-		</div>
+		</div> -->
 		<div id='subject_grade'>
 			<div>
 				<div class="slide-grade">
@@ -71,7 +73,7 @@
 			<a href="postfile.html" style="width: 20%;"><img style="width: 40px;" src="./img/note_navbar.png"></a>
 			<a href="home.html" style="width: 20%;"><img style="width: 40px;" src="./img/home_navbar.png"></a>
 			<a href="Todo.html" style="width: 20%;"><img style="width: 40px;" src="./img/pencilicon.png"></a>
-			<a href="setting.html" style="width: 20%;"><img style="width: 40px;" src="./img/setting_navbar.png"></a>
+			<a href="setting.html" style="width: 20%;"><img style="width: 40px;" src="./img/shut-down.png"></a>
 		</div>
 	</div>
 	<div id="modal_grade1" class="modal-main">
@@ -91,14 +93,20 @@
 					<div>จำนวนข้อทั้งหมด</div>
 					<input id="save2" type=" text">
 				</div>
-				<div class="input1 i3">
+				<div class="input1 i3 red">
 					<div>จำนวนข้อที่ถูกต้อง</div>
 					<input id="save3" type=" text">
 				</div>
+				<br>
+				<div id="warning1" class="warning1">จำนวนข้อที่ถูกต้องมากกว่าข้อทั้งหมด</div>
 			</div>
 
 		</div>
 
+	</div>
+
+	<div>
+		
 	</div>
 
 </body>
@@ -113,12 +121,16 @@
 		modal_grade1.classList.remove('open')
 		getCalData()
 	}
+	//save grade ทั้งหมด
 	async function saveGrade() {
 		let input1 = save1.value
 		let input2 = save2.value
 		let input3 = save3.value
-		if (input1 && input2 && input3) {
+		//ตรวจสอบว่า input1 input2 input3 มีค่าไหม
+		if (input1 && input2 && input3 && parseFloat(input3) <= parseFloat(input2)) {
 			try {
+				warning1.classList.remove('open')
+				save3.classList.remove('red')
 				let jsondata = {
 					subject: input1,
 					num_all: parseFloat(input2),
@@ -138,14 +150,21 @@
 				})
 				const data = await response.json()
 				console.log(data)
-				if(data.msg === 'success'){
+				if (data.msg === 'success') {
 					closeModalGrade()
-				}else{
+					save1.value = ''
+					save2.value = ''
+					save3.value = ''
+				} else {
 					alert('something err')
 				}
 			} catch (err) {
 				console.log(err)
 			}
+		} else if (input3 > input2) {
+			alert('จำนวนข้อมากเกินไป')
+			warning1.classList.add('open')
+			save3.classList.add('red')
 		} else {
 			alert('กรุณากรอกข้อมูลให้ครบ')
 		}
@@ -179,11 +198,28 @@
 					let correct = parseFloat(data.ref3)
 					return correct / full * PERCENT_GRADE
 				}
+				const cal_grade = () => {
+
+					if (cal_percent() >= 80 && cal_percent() <= 100) {
+						return 'A'
+					} else if (cal_percent() >= 70 && cal_percent() <= 79) {
+						return 'B'
+					} else if (cal_percent() >= 60 && cal_percent() <= 69) {
+						return 'C'
+					}
+					else if (cal_percent() >= 50 && cal_percent() <= 59) {
+						return 'D'
+					} else if (cal_percent() >= 0 && cal_percent() <= 49) {
+						return 'F'
+					} else {
+						return 'e' // err code
+					}
+				}
 				html += `
 				<div>
 				<div class="slide-grade">
 					<div class="circle-grade">
-						<div id="text_grade" class="grade-text">A</div>
+						<div id="text_grade" class="grade-text">${cal_grade()}</div>
 					</div>
 					<div class="gread-bg-grade-text-center">
 						<div class="grade-text-title">${data.ref1}</div>
